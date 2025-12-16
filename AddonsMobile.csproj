@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<!-- ═══════════════════════════════════════════════════════════════ -->
+	<!--                    MOD CONFIGURATION                            -->
+	<!-- ═══════════════════════════════════════════════════════════════ -->
+
+	<PropertyGroup>
+		<!-- Custom assembly path (GANTI SESUAI LOKASI KAMU) -->
+		<ModBuildAssemblyPath>D:\MyStardewMods\ModBuildConfig\assemblies</ModBuildAssemblyPath>
+
+		<!-- Game path (optional - akan auto-detect jika kosong) -->
+		<GamePath>C:\Users\ASUS\Downloads\Stardew.Valley.Gamdie.com\Stardew Valley</GamePath>
+
+		<!-- Mod settings -->
+		<ModFolderName>$(MSBuildProjectName)</ModFolderName>
+		<EnableHarmony>true</EnableHarmony>
+		<EnableGameLaunch>true</EnableGameLaunch>
+	</PropertyGroup>
+
+	<!-- ═══════════════════════════════════════════════════════════════ -->
+	<!--                    IMPORT BUILD CONFIG                          -->
+	<!-- ═══════════════════════════════════════════════════════════════ -->
+
+	<!-- Import props first -->
+	<Import Project="..\ModBuildConfig\SMAPIBuildConfig.props" />
+
+	<!-- Import targets last -->
+	<Import Project="..\ModBuildConfig\build\SMAPIBuildConfig.targets" />
+
+</Project>

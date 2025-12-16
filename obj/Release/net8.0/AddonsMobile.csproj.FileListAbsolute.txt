@@ -1,0 +1,9 @@
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\gear_icon.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\manifest.json
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\AddonsMobile.dll
+D:\MyStardewMods\AddOnsMobile\obj\Release\net8.0\AddonsMobile.csproj.AssemblyReference.cache
+D:\MyStardewMods\AddOnsMobile\obj\Release\net8.0\AddonsMobile.GeneratedMSBuildEditorConfig.editorconfig
+D:\MyStardewMods\AddOnsMobile\obj\Release\net8.0\AddonsMobile.AssemblyInfoInputs.cache
+D:\MyStardewMods\AddOnsMobile\obj\Release\net8.0\AddonsMobile.AssemblyInfo.cs
+D:\MyStardewMods\AddOnsMobile\obj\Release\net8.0\AddonsMobile.csproj.CoreCompileInputs.cache
+D:\MyStardewMods\AddOnsMobile\obj\Release\net8.0\AddonsMobile.dll

@@ -34,7 +34,7 @@ This mod adds a **floating action button (FAB)** on your screen. When you tap it
 
 ### Installation
 
-1. Install [SMAPI](https://smapi.io/](https://github.com/NRTnarathip/SMAPI-Android-1.6) for Android
+1. Install [SMAPI](https://github.com/NRTnarathip/SMAPI-Android-1.6) for Android
 2. Download **Addons Mobile** from Nexus Mods
 3. Extract to `StardewValley/Mods/` folder
 4. Done! The FAB will appear when you load a save

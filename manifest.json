@@ -1,7 +1,7 @@
 {
     "Name": "Addons Mobile",
     "Author": "IGrigori22",
-    "Version": "0.9.0",
+    "Version": "1.0.0",
     "Description": "Centralized virtual button manager for Android mods",
     "UniqueID": "IGrigori22.AddonsMobile",
     "EntryDll": "AddonsMobile.dll",

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AddonsMobile")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+826617a920b832f8a0375bdc46e046fc2b6c94cc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5305881e12c99b23b9f4257a6b8d239b68ab0d2f")]
 [assembly: System.Reflection.AssemblyProductAttribute("AddonsMobile")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AddonsMobile")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

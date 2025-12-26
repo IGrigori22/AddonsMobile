@@ -98,7 +98,7 @@ In your mod's `manifest.json`:
   "UniqueID": "YourName.YourModName",
   "Dependencies": [
     {
-      "UniqueID": "YourName.AddonsMobile",
+      "UniqueID": "IGrigori22.AddonsMobile",
       "MinimumVersion": "1.0.0",
       "IsRequired": false
     }
@@ -125,7 +125,7 @@ public class ModEntry : Mod
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
         // Get the API
-        _mobileAPI = Helper.ModRegistry.GetApi<IMobileAddonsAPI>("YourName.AddonsMobile");
+        _mobileAPI = Helper.ModRegistry.GetApi<IMobileAddonsAPI>("IGrigori22.AddonsMobile");
         
         if (_mobileAPI == null)
         {
@@ -939,9 +939,9 @@ dotnet build
 
 ## 🙏 Credits
 
-- **SMAPI Team** - For the amazing modding API
 - **ConcernedApe** - For creating Stardew Valley
-- **Android SMAPI Porters** - For making mobile modding possible
+- **SMAPI Team** - For Pathoschild as the creator of SMAPI
+- **Android SMAPI Porters** - For NRTnarathip who works hard for smapi mobile
 
 ---
 
@@ -949,7 +949,7 @@ dotnet build
 
 - **Issues**: [GitHub Issues](../../issues)
 - **Discussions**: [GitHub Discussions](../../discussions)
-- **Discord**: [Stardew Valley Discord](https://discord.gg/stardewvalley) - #modding-mobile
+- **Discord**: [Stardew Valley Discord](https://discord.gg/stardewvalley) - #making-mods-general
 
 ---
 

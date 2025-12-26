@@ -80,7 +80,7 @@ namespace AddonsMobile.UI.Rendering
             return texture;
         }
 
-        private Texture2D GenerateBackgroundTexture(FabBackgroundStyle style, int size)
+        private Texture2D? GenerateBackgroundTexture(FabBackgroundStyle style, int size)
         {
             return style switch
             {

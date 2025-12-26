@@ -7,3 +7,4 @@ D:\MyStardewMods\AddOnsMobile\obj\Release\net8.0\AddonsMobile.AssemblyInfoInputs
 D:\MyStardewMods\AddOnsMobile\obj\Release\net8.0\AddonsMobile.AssemblyInfo.cs
 D:\MyStardewMods\AddOnsMobile\obj\Release\net8.0\AddonsMobile.csproj.CoreCompileInputs.cache
 D:\MyStardewMods\AddOnsMobile\obj\Release\net8.0\AddonsMobile.dll
+D:\MyStardewMods\AddOnsMobile\obj\Release\net8.0\AddonsMobile.sourcelink.json

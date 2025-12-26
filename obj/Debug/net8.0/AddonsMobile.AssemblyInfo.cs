@@ -12,9 +12,9 @@ using System;
 using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("AddonsMobile")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+826617a920b832f8a0375bdc46e046fc2b6c94cc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6ed8abdca8f45385fec85d7a351c761da6643c97")]
 [assembly: System.Reflection.AssemblyProductAttribute("AddonsMobile")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AddonsMobile")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

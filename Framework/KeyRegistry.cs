@@ -1,346 +1,364 @@
-﻿using StardewModdingAPI;
+﻿using AddonsMobile.Framework.Events;
+using AddonsMobile.Framework.Validation;
+using StardewModdingAPI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AddonsMobile.Framework
 {
-    // ═══════════════════════════════════════════════════════════════════════════
-    // EVENT ARGS
-    // ═══════════════════════════════════════════════════════════════════════════
-
     /// <summary>
-    /// Event args untuk button registration
-    /// </summary>
-    public class ButtonRegisteredEventArgs : EventArgs
-    {
-        public ModKeyButton Button { get; }
-        public bool IsUpdate { get; }
-
-        public ButtonRegisteredEventArgs(ModKeyButton button, bool isUpdate)
-        {
-            Button = button;
-            IsUpdate = isUpdate;
-        }
-    }
-
-    /// <summary>
-    /// Event args untuk button unregistration
-    /// </summary>
-    public class ButtonUnregisteredEventArgs : EventArgs
-    {
-        public string UniqueId { get; }
-        public string ModId { get; }
-
-        public ButtonUnregisteredEventArgs(string uniqueId, string modId)
-        {
-            UniqueId = uniqueId;
-            ModId = modId;
-        }
-    }
-
-    /// <summary>
-    /// Event args untuk button triggered
-    /// </summary>
-    public class ButtonTriggeredEventArgs : EventArgs
-    {
-        public ModKeyButton Button { get; }
-        public bool WasProgrammatic { get; }
-
-        public ButtonTriggeredEventArgs(ModKeyButton button, bool wasProgrammatic)
-        {
-            Button = button;
-            WasProgrammatic = wasProgrammatic;
-        }
-    }
-
-    /// <summary>
-    /// Event args untuk toggle state change
-    /// </summary>
-    public class ButtonToggledEventArgs : EventArgs
-    {
-        public ModKeyButton Button { get; }
-        public bool NewState { get; }
-
-        public ButtonToggledEventArgs(ModKeyButton button, bool newState)
-        {
-            Button = button;
-            NewState = newState;
-        }
-    }
-
-    // ═══════════════════════════════════════════════════════════════════════════
-    // REGISTRY
-    // ═══════════════════════════════════════════════════════════════════════════
-
-    /// <summary>
-    /// Registry pusat untuk semua tombol yang didaftarkan
+    /// Registry pusat untuk semua button yang didaftarkan.
+    /// Thread-safe dan mendukung event-driven architecture.
     /// </summary>
     public class KeyRegistry
     {
-        // ═══════════════════════════════════════════════════════════
-        // FIELDS
-        // ═══════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════════════════
+        // PRIVATE FIELDS
+        // ═══════════════════════════════════════════════════════════════════════════
 
-        private readonly Dictionary<string, ModKeyButton> _registeredButtons = new();
-        private readonly Dictionary<string, List<string>> _modButtons = new();
-        private readonly Dictionary<KeyCategory, List<string>> _categoryButtons = new();
+        private readonly Dictionary<string, ModKeyButton> _registeredButtons;
+        private readonly Dictionary<string, List<string>> _modButtons;
+        private readonly Dictionary<KeyCategory, List<string>> _categoryButtons;
         private readonly IMonitor _monitor;
-        private readonly object _lock = new(); // Thread safety
+        private readonly object _lock;
 
-        // ═══════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════════════════
         // EVENTS
-        // ═══════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════════════════
 
-        /// <summary>Dipanggil saat button baru didaftarkan</summary>
-        public event EventHandler<ButtonRegisteredEventArgs> ButtonRegistered;
+        /// <summary>Dipanggil saat button baru didaftarkan atau diupdate</summary>
+        public event EventHandler<ButtonEventArgs.ButtonRegisteredEventArgs> ButtonRegistered;
 
         /// <summary>Dipanggil saat button di-unregister</summary>
-        public event EventHandler<ButtonUnregisteredEventArgs> ButtonUnregistered;
+        public event EventHandler<ButtonEventArgs.ButtonUnregisteredEventArgs> ButtonUnregistered;
 
         /// <summary>Dipanggil saat button di-trigger</summary>
-        public event EventHandler<ButtonTriggeredEventArgs> ButtonTriggered;
+        public event EventHandler<ButtonEventArgs.ButtonTriggeredEventArgs> ButtonTriggered;
 
         /// <summary>Dipanggil saat toggle button berubah state</summary>
-        public event EventHandler<ButtonToggledEventArgs> ButtonToggled;
+        public event EventHandler<ButtonEventArgs.ButtonToggledEventArgs> ButtonToggled;
 
-        /// <summary>Dipanggil saat registry berubah (add/remove)</summary>
-        public event EventHandler RegistryChanged;
+        /// <summary>Dipanggil saat registry berubah</summary>
+        public event EventHandler<ButtonEventArgs.RegistryChangedEventArgs> RegistryChanged;
 
-        // ═══════════════════════════════════════════════════════════
-        // PROPERTIES
-        // ═══════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════════════════
+        // PUBLIC PROPERTIES
+        // ═══════════════════════════════════════════════════════════════════════════
 
         /// <summary>Jumlah button yang terdaftar</summary>
-        public int Count
-        {
-            get { lock (_lock) { return _registeredButtons.Count; } }
-        }
+        public int Count => ExecuteThreadSafe(() => _registeredButtons.Count);
 
         /// <summary>Jumlah mod yang mendaftar button</summary>
-        public int ModCount
-        {
-            get { lock (_lock) { return _modButtons.Count; } }
-        }
+        public int ModCount => ExecuteThreadSafe(() => _modButtons.Count);
 
-        /// <summary>Semua kategori yang memiliki button</summary>
+        /// <summary>Apakah registry kosong</summary>
+        public bool IsEmpty => Count == 0;
+
+        /// <summary>Semua kategori yang memiliki button (sorted)</summary>
         public IEnumerable<KeyCategory> ActiveCategories
         {
             get
             {
-                lock (_lock)
-                {
-                    return _categoryButtons
+                return ExecuteThreadSafe(() =>
+                    _categoryButtons
                         .Where(kv => kv.Value.Count > 0)
                         .Select(kv => kv.Key)
                         .OrderBy(c => c.GetSortOrder())
-                        .ToList();
-                }
+                        .ToList()
+                );
             }
         }
 
-        // ═══════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════════════════
         // CONSTRUCTOR
-        // ═══════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════════════════
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         public KeyRegistry(IMonitor monitor)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         {
-            _monitor = monitor;
+            _monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
+            _lock = new object();
 
-            // Pre-initialize category dictionary
+            _registeredButtons = new Dictionary<string, ModKeyButton>();
+            _modButtons = new Dictionary<string, List<string>>();
+            _categoryButtons = new Dictionary<KeyCategory, List<string>>();
+
+            InitializeCategoryDictionary();
+
+            _monitor.Log("KeyRegistry initialized", LogLevel.Trace);
+        }
+
+        /// <summary>
+        /// Pre-initialize semua kategori untuk menghindari null checks.
+        /// </summary>
+        private void InitializeCategoryDictionary()
+        {
             foreach (KeyCategory category in Enum.GetValues<KeyCategory>())
             {
                 _categoryButtons[category] = new List<string>();
             }
         }
 
-        // ═══════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════════════════
         // REGISTRATION METHODS
-        // ═══════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════════════════
 
         /// <summary>
-        /// Mendaftarkan tombol baru
+        /// Mendaftarkan button baru atau update button yang sudah ada.
         /// </summary>
+        /// <returns>True jika berhasil, false jika validasi gagal</returns>
         public bool RegisterButton(ModKeyButton button)
         {
             // Validasi
-            if (string.IsNullOrEmpty(button.UniqueId))
+            var (isValid, errorMessage) = ButtonValidator.Validate(button);
+            if (!isValid)
             {
-                _monitor.Log("Failed to register button: UniqueId is empty", LogLevel.Error);
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(button.ModId))
-            {
-                _monitor.Log($"Failed to register button '{button.UniqueId}': ModId is empty", LogLevel.Error);
-                return false;
-            }
-
-            if (!button.HasAnyAction)
-            {
-                _monitor.Log($"Failed to register button '{button.UniqueId}': No action defined", LogLevel.Error);
+                ButtonValidator.LogValidationError(_monitor, button, errorMessage);
                 return false;
             }
 
             bool isUpdate;
+            ModKeyButton? oldButton = null;
 
+            // Registration dengan thread safety
             lock (_lock)
             {
-                // Cek duplikat
-                isUpdate = _registeredButtons.ContainsKey(button.UniqueId);
+                isUpdate = _registeredButtons.TryGetValue(button.UniqueId, out oldButton);
 
                 if (isUpdate)
                 {
-                    // Update existing - remove from old category first
-                    var oldButton = _registeredButtons[button.UniqueId];
-                    _categoryButtons[oldButton.Category].Remove(button.UniqueId);
-
-                    _monitor.Log($"Button '{button.UniqueId}' already registered. Updating.", LogLevel.Debug);
+                    HandleButtonUpdate(button, oldButton);
                 }
                 else
                 {
-                    // Track per mod
-                    if (!_modButtons.ContainsKey(button.ModId))
-                        _modButtons[button.ModId] = new List<string>();
-
-                    _modButtons[button.ModId].Add(button.UniqueId);
+                    HandleButtonRegistration(button);
                 }
 
-                // Register/Update
                 _registeredButtons[button.UniqueId] = button;
-
-                // Track per category
-                _categoryButtons[button.Category].Add(button.UniqueId);
             }
 
-            _monitor.Log($"Registered button '{button.DisplayName}' ({button.UniqueId}) " +
-                        $"from mod '{button.ModId}' in category '{button.Category}'", LogLevel.Debug);
+            // Logging
+            LogButtonRegistration(button, isUpdate);
 
-            // Fire events
-            ButtonRegistered?.Invoke(this, new ButtonRegisteredEventArgs(button, isUpdate));
-            RegistryChanged?.Invoke(this, EventArgs.Empty);
+            // Fire events (outside lock to prevent deadlock)
+            RaiseButtonRegisteredEvent(button, isUpdate);
+            RaiseRegistryChangedEvent(
+                isUpdate ? ButtonEventArgs.RegistryChangeType.ButtonUpdated
+                         : ButtonEventArgs.RegistryChangeType.ButtonAdded
+            );
 
             return true;
         }
 
         /// <summary>
-        /// Menghapus registrasi tombol
+        /// Handle logic untuk update button yang sudah ada.
         /// </summary>
+        private void HandleButtonUpdate(ModKeyButton newButton, ModKeyButton oldButton)
+        {
+            // Remove dari kategori lama jika berbeda
+            if (oldButton.Category != newButton.Category)
+            {
+                _categoryButtons[oldButton.Category].Remove(newButton.UniqueId);
+                _categoryButtons[newButton.Category].Add(newButton.UniqueId);
+            }
+
+            _monitor.Log($"Updating existing button '{newButton.UniqueId}'", LogLevel.Debug);
+        }
+
+        /// <summary>
+        /// Handle logic untuk registrasi button baru.
+        /// </summary>
+        private void HandleButtonRegistration(ModKeyButton button)
+        {
+            // Track per mod
+            if (!_modButtons.ContainsKey(button.ModId))
+            {
+                _modButtons[button.ModId] = new List<string>();
+            }
+            _modButtons[button.ModId].Add(button.UniqueId);
+
+            // Track per category
+            _categoryButtons[button.Category].Add(button.UniqueId);
+        }
+
+        /// <summary>
+        /// Log informasi registrasi button.
+        /// </summary>
+        private void LogButtonRegistration(ModKeyButton button, bool isUpdate)
+        {
+            string action = isUpdate ? "Updated" : "Registered";
+            _monitor.Log(
+                $"✓ {action} button '{button.DisplayName}' ({button.UniqueId}) " +
+                $"from '{button.ModId}' in category '{button.Category}'",
+                LogLevel.Debug
+            );
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        /// <summary>
+        /// Menghapus registrasi button berdasarkan unique ID.
+        /// </summary>
+        /// <returns>True jika berhasil dihapus, false jika button tidak ditemukan</returns>
         public bool UnregisterButton(string uniqueId)
         {
-            ModKeyButton button;
+            if (string.IsNullOrWhiteSpace(uniqueId))
+            {
+                _monitor.Log("Cannot unregister button: UniqueId is empty", LogLevel.Error);
+                return false;
+            }
+
+            ModKeyButton? button;
 
             lock (_lock)
             {
+                // Cari button
                 if (!_registeredButtons.TryGetValue(uniqueId, out button))
+                {
+                    _monitor.Log($"Button '{uniqueId}' not found in registry", LogLevel.Trace);
                     return false;
+                }
 
+                // Remove dari semua tracking
                 _registeredButtons.Remove(uniqueId);
 
-                if (_modButtons.ContainsKey(button.ModId))
-                    _modButtons[button.ModId].Remove(uniqueId);
+                if (_modButtons.TryGetValue(button.ModId, out var modButtonList))
+                {
+                    modButtonList.Remove(uniqueId);
+                    if (modButtonList.Count == 0)
+                    {
+                        _modButtons.Remove(button.ModId);
+                    }
+                }
 
                 _categoryButtons[button.Category].Remove(uniqueId);
             }
 
-            _monitor.Log($"Unregistered button '{uniqueId}'", LogLevel.Debug);
+            _monitor.Log($"✓ Unregistered button '{uniqueId}'", LogLevel.Debug);
 
-            ButtonUnregistered?.Invoke(this, new ButtonUnregisteredEventArgs(uniqueId, button.ModId));
-            RegistryChanged?.Invoke(this, EventArgs.Empty);
+            // Fire events
+            RaiseButtonUnregisteredEvent(uniqueId, button.ModId);
+            RaiseRegistryChangedEvent(ButtonEventArgs.RegistryChangeType.ButtonRemoved);
 
             return true;
         }
 
         /// <summary>
-        /// Menghapus semua tombol dari mod tertentu
+        /// Menghapus semua button dari mod tertentu.
         /// </summary>
-        public void UnregisterAllFromMod(string modId)
+        /// <returns>Jumlah button yang dihapus</returns>
+        public int UnregisterAllFromMod(string modId)
         {
-            List<string> removedIds = new();
+            if (string.IsNullOrWhiteSpace(modId))
+            {
+                _monitor.Log("Cannot unregister mod: ModId is empty", LogLevel.Error);
+                return 0;
+            }
+
+            List<(string uniqueId, ModKeyButton button)> removedButtons = new();
 
             lock (_lock)
             {
-                if (!_modButtons.TryGetValue(modId, out var buttonIds))
-                    return;
+                if (!_modButtons.TryGetValue(modId, out var buttonIds) || buttonIds.Count == 0)
+                {
+                    _monitor.Log($"No buttons registered for mod '{modId}'", LogLevel.Trace);
+                    return 0;
+                }
 
+                // Collect buttons to remove
                 foreach (var id in buttonIds.ToList())
                 {
                     if (_registeredButtons.TryGetValue(id, out var button))
                     {
                         _categoryButtons[button.Category].Remove(id);
                         _registeredButtons.Remove(id);
-                        removedIds.Add(id);
+                        removedButtons.Add((id, button));
                     }
                 }
 
                 _modButtons.Remove(modId);
             }
 
-            foreach (var id in removedIds)
+            // Fire events for each removed button
+            foreach (var (uniqueId, _) in removedButtons)
             {
-                ButtonUnregistered?.Invoke(this, new ButtonUnregisteredEventArgs(id, modId));
+                RaiseButtonUnregisteredEvent(uniqueId, modId);
             }
 
-            if (removedIds.Count > 0)
+            if (removedButtons.Count > 0)
             {
-                _monitor.Log($"Unregistered {removedIds.Count} buttons from mod '{modId}'", LogLevel.Debug);
-                RegistryChanged?.Invoke(this, EventArgs.Empty);
+                _monitor.Log($"✓ Unregistered {removedButtons.Count} button(s) from mod '{modId}'", LogLevel.Info);
+                RaiseRegistryChangedEvent(ButtonEventArgs.RegistryChangeType.ModUnregistered);
             }
+
+            return removedButtons.Count;
         }
 
-        // ═══════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════════════════
         // QUERY METHODS
-        // ═══════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════════════════
 
         /// <summary>
-        /// Mendapatkan semua tombol yang terdaftar (visible only)
+        /// Mendapatkan semua button yang visible (ShouldShow = true).
+        /// Hasil sudah di-sort berdasarkan priority dan kategori.
         /// </summary>
         public IEnumerable<ModKeyButton> GetAllButtons()
         {
-            lock (_lock)
-            {
-                return _registeredButtons.Values
+            return ExecuteThreadSafe(() =>
+                _registeredButtons.Values
                     .Where(b => b.ShouldShow())
                     .OrderByDescending(b => b.Priority)
                     .ThenBy(b => b.Category.GetSortOrder())
                     .ThenBy(b => b.DisplayName)
-                    .ToList();
-            }
+                    .ToList()
+            );
         }
 
         /// <summary>
-        /// Mendapatkan SEMUA tombol (termasuk hidden)
+        /// Mendapatkan SEMUA button termasuk yang hidden.
+        /// Berguna untuk debugging dan admin tools.
         /// </summary>
         public IEnumerable<ModKeyButton> GetAllButtonsIncludingHidden()
         {
-            lock (_lock)
-            {
-                return _registeredButtons.Values
+            return ExecuteThreadSafe(() =>
+                _registeredButtons.Values
                     .OrderByDescending(b => b.Priority)
                     .ThenBy(b => b.Category.GetSortOrder())
-                    .ToList();
-            }
+                    .ThenBy(b => b.DisplayName)
+                    .ToList()
+            );
         }
 
         /// <summary>
-        /// Mendapatkan tombol berdasarkan kategori
+        /// Mendapatkan button berdasarkan kategori (visible only).
         /// </summary>
         public IEnumerable<ModKeyButton> GetButtonsByCategory(KeyCategory category)
         {
-            lock (_lock)
+            return ExecuteThreadSafe(() =>
             {
-                return _categoryButtons[category]
+                if (!_categoryButtons.TryGetValue(category, out var buttonIds))
+                    return Enumerable.Empty<ModKeyButton>();
+
+                return buttonIds
                     .Select(id => _registeredButtons.GetValueOrDefault(id))
                     .Where(b => b != null && b.ShouldShow())
                     .OrderByDescending(b => b.Priority)
                     .ThenBy(b => b.DisplayName)
                     .ToList();
-            }
+            });
         }
 
         /// <summary>
-        /// Mendapatkan tombol berdasarkan mod
+        /// Mendapatkan button berdasarkan mod (visible only).
         /// </summary>
         public IEnumerable<ModKeyButton> GetButtonsByMod(string modId)
         {
-            lock (_lock)
+            if (string.IsNullOrWhiteSpace(modId))
+                return Enumerable.Empty<ModKeyButton>();
+
+            return ExecuteThreadSafe(() =>
             {
                 if (!_modButtons.TryGetValue(modId, out var buttonIds))
                     return Enumerable.Empty<ModKeyButton>();
@@ -349,101 +367,151 @@ namespace AddonsMobile.Framework
                     .Select(id => _registeredButtons.GetValueOrDefault(id))
                     .Where(b => b != null && b.ShouldShow())
                     .OrderByDescending(b => b.Priority)
+                    .ThenBy(b => b.DisplayName)
                     .ToList();
-            }
+            });
         }
 
         /// <summary>
-        /// Mendapatkan tombol tertentu
+        /// Mendapatkan button tertentu berdasarkan unique ID.
         /// </summary>
-        public ModKeyButton GetButton(string uniqueId)
+        /// <returns>Button jika ditemukan, null jika tidak ada</returns>
+        public ModKeyButton? GetButton(string uniqueId)
         {
-            lock (_lock)
-            {
-                return _registeredButtons.GetValueOrDefault(uniqueId);
-            }
+            if (string.IsNullOrWhiteSpace(uniqueId))
+                return null;
+
+            return ExecuteThreadSafe(() =>
+                _registeredButtons.GetValueOrDefault(uniqueId)
+            );
         }
 
         /// <summary>
-        /// Mendapatkan jumlah button per kategori
+        /// Cek apakah button dengan ID tertentu terdaftar.
+        /// </summary>
+        public bool HasButton(string uniqueId)
+        {
+            if (string.IsNullOrWhiteSpace(uniqueId))
+                return false;
+
+            return ExecuteThreadSafe(() =>
+                _registeredButtons.ContainsKey(uniqueId)
+            );
+        }
+
+        /// <summary>
+        /// Mendapatkan statistik jumlah button per kategori.
         /// </summary>
         public Dictionary<KeyCategory, int> GetButtonCountByCategory()
         {
-            lock (_lock)
-            {
-                return _categoryButtons.ToDictionary(
+            return ExecuteThreadSafe(() =>
+                _categoryButtons.ToDictionary(
                     kv => kv.Key,
                     kv => kv.Value.Count(id =>
                         _registeredButtons.TryGetValue(id, out var btn) && btn.ShouldShow())
-                );
-            }
+                )
+            );
         }
 
-        // ═══════════════════════════════════════════════════════════
+        /// <summary>
+        /// Mendapatkan statistik jumlah button per mod.
+        /// </summary>
+        public Dictionary<string, int> GetButtonCountByMod()
+        {
+            return ExecuteThreadSafe(() =>
+                _modButtons.ToDictionary(
+                    kv => kv.Key,
+                    kv => kv.Value.Count(id =>
+                        _registeredButtons.TryGetValue(id, out var btn) && btn.ShouldShow())
+                )
+            );
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════
         // TRIGGER METHODS
-        // ═══════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════════════════
 
         /// <summary>
-        /// Trigger tombol berdasarkan ID
+        /// Trigger button berdasarkan unique ID.
         /// </summary>
-        public bool TriggerButton(string uniqueId, bool isProgrammatic = false)
+        /// <param name="uniqueId">ID button yang akan di-trigger</param>
+        /// <param name="isProgrammatic">True jika trigger dari code, bukan user</param>
+        /// <param name="logAction">True untuk log action ke console</param>
+        /// <returns>True jika berhasil, false jika gagal atau tidak bisa di-trigger</returns>
+        public bool TriggerButton(string uniqueId, bool isProgrammatic = false, bool logAction = false)
         {
-            ModKeyButton button;
-
-            lock (_lock)
+            if (string.IsNullOrWhiteSpace(uniqueId))
             {
-                button = _registeredButtons.GetValueOrDefault(uniqueId);
+                _monitor.Log("Cannot trigger button: UniqueId is empty", LogLevel.Error);
+                return false;
             }
 
-            if (button == null || !button.ShouldShow())
+            ModKeyButton button = GetButton(uniqueId);
+
+            // Validasi button
+            if (button == null)
             {
-                _monitor.Log($"Cannot trigger '{uniqueId}': button not found or hidden", LogLevel.Trace);
+                if (logAction)
+                    _monitor.Log($"Cannot trigger '{uniqueId}': button not found", LogLevel.Warn);
+                return false;
+            }
+
+            if (!button.ShouldShow())
+            {
+                if (logAction)
+                    _monitor.Log($"Cannot trigger '{uniqueId}': button is hidden", LogLevel.Debug);
                 return false;
             }
 
             if (!button.CanPress())
             {
-                _monitor.Log($"Cannot trigger '{uniqueId}': cooldown active", LogLevel.Trace);
+                if (logAction)
+                    _monitor.Log($"Cannot trigger '{uniqueId}': cooldown active", LogLevel.Debug);
                 return false;
             }
 
+            // Execute button action
             try
             {
                 bool wasToggled = button.IsToggled;
                 button.ExecutePress();
 
                 // Fire events
-                ButtonTriggered?.Invoke(this, new ButtonTriggeredEventArgs(button, isProgrammatic));
+                var triggerEvent = new ButtonEventArgs.ButtonTriggeredEventArgs(button, isProgrammatic);
+                RaiseButtonTriggeredEvent(triggerEvent);
 
+                // Fire toggle event if state changed
                 if (button.Type == ButtonType.Toggle && button.IsToggled != wasToggled)
                 {
-                    ButtonToggled?.Invoke(this, new ButtonToggledEventArgs(button, button.IsToggled));
+                    RaiseButtonToggledEvent(button, button.IsToggled, wasToggled);
                 }
 
-                _monitor.Log($"Triggered button '{uniqueId}'" +
-                    (isProgrammatic ? " (programmatic)" : ""), LogLevel.Trace);
+                if (logAction)
+                {
+                    string source = isProgrammatic ? " (programmatic)" : "";
+                    _monitor.Log($"✓ Triggered button '{uniqueId}'{source}", LogLevel.Info);
+                }
+
                 return true;
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Error triggering button '{uniqueId}': {ex.Message}", LogLevel.Error);
+                _monitor.Log($"✗ Error triggering button '{uniqueId}': {ex.Message}", LogLevel.Error);
+                _monitor.Log(ex.StackTrace, LogLevel.Trace);
                 return false;
             }
         }
 
         /// <summary>
-        /// Update hold state untuk button
+        /// Update semua hold buttons (dipanggil setiap frame).
         /// </summary>
         public void UpdateHoldButtons(float deltaTime)
         {
-            List<ModKeyButton> holdButtons;
-
-            lock (_lock)
-            {
-                holdButtons = _registeredButtons.Values
+            List<ModKeyButton> holdButtons = ExecuteThreadSafe(() =>
+                _registeredButtons.Values
                     .Where(b => b.Type == ButtonType.Hold && b.IsBeingHeld)
-                    .ToList();
-            }
+                    .ToList()
+            );
 
             foreach (var button in holdButtons)
             {
@@ -453,25 +521,22 @@ namespace AddonsMobile.Framework
                 }
                 catch (Exception ex)
                 {
-                    _monitor.Log($"Error in hold action for '{button.UniqueId}': {ex.Message}", LogLevel.Error);
+                    _monitor.Log($"✗ Error in hold action for '{button.UniqueId}': {ex.Message}", LogLevel.Error);
                     button.IsBeingHeld = false;
                 }
             }
         }
 
         /// <summary>
-        /// Release semua hold button
+        /// Release semua hold buttons (biasanya saat menu ditutup).
         /// </summary>
         public void ReleaseAllHoldButtons()
         {
-            List<ModKeyButton> holdButtons;
-
-            lock (_lock)
-            {
-                holdButtons = _registeredButtons.Values
+            List<ModKeyButton> holdButtons = ExecuteThreadSafe(() =>
+                _registeredButtons.Values
                     .Where(b => b.Type == ButtonType.Hold && b.IsBeingHeld)
-                    .ToList();
-            }
+                    .ToList()
+            );
 
             foreach (var button in holdButtons)
             {
@@ -481,68 +546,217 @@ namespace AddonsMobile.Framework
                 }
                 catch (Exception ex)
                 {
-                    _monitor.Log($"Error releasing button '{button.UniqueId}': {ex.Message}", LogLevel.Error);
+                    _monitor.Log($"✗ Error releasing button '{button.UniqueId}': {ex.Message}", LogLevel.Error);
                 }
+            }
+
+            if (holdButtons.Count > 0)
+            {
+                _monitor.Log($"Released {holdButtons.Count} hold button(s)", LogLevel.Debug);
             }
         }
 
-        // ═══════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════════════════
         // STATE MANAGEMENT
-        // ═══════════════════════════════════════════════════════════
+        // ═══════════════════════════════════════════════════════════════════════════
 
         /// <summary>
-        /// Set toggle state untuk button
+        /// Set toggle state untuk button tertentu.
         /// </summary>
-        public bool SetToggleState(string uniqueId, bool toggled)
+        public bool SetToggleState(string uniqueId, bool toggled, bool invokeAction = false)
         {
-            ModKeyButton button;
-
-            lock (_lock)
-            {
-                button = _registeredButtons.GetValueOrDefault(uniqueId);
-            }
-
-            if (button == null || button.Type != ButtonType.Toggle)
+            if (string.IsNullOrWhiteSpace(uniqueId))
                 return false;
 
-            bool oldState = button.IsToggled;
-            button.SetToggleState(toggled, true);
+            ModKeyButton button = GetButton(uniqueId);
 
-            if (oldState != toggled)
+            if (button == null)
             {
-                ButtonToggled?.Invoke(this, new ButtonToggledEventArgs(button, toggled));
+                _monitor.Log($"Cannot set toggle state: button '{uniqueId}' not found", LogLevel.Warn);
+                return false;
             }
+
+            if (button.Type != ButtonType.Toggle)
+            {
+                _monitor.Log($"Cannot set toggle state: button '{uniqueId}' is not a toggle button", LogLevel.Warn);
+                return false;
+            }
+
+            bool oldState = button.IsToggled;
+
+            if (oldState == toggled)
+                return true; // Already in desired state
+
+            button.SetToggleState(toggled, invokeAction);
+
+            // Fire event
+            RaiseButtonToggledEvent(button, toggled, oldState);
+
+            _monitor.Log($"Toggle state changed for '{uniqueId}': {oldState} → {toggled}", LogLevel.Debug);
 
             return true;
         }
 
         /// <summary>
-        /// Set enabled state untuk button
+        /// Set enabled state untuk button tertentu.
         /// </summary>
         public bool SetEnabled(string uniqueId, bool enabled)
         {
+            if (string.IsNullOrWhiteSpace(uniqueId))
+                return false;
+
+            ModKeyButton button = GetButton(uniqueId);
+
+            if (button == null)
+                return false;
+
             lock (_lock)
             {
-                var button = _registeredButtons.GetValueOrDefault(uniqueId);
-                if (button == null) return false;
-
                 button.IsEnabled = enabled;
-                return true;
+            }
+
+            _monitor.Log($"Button '{uniqueId}' enabled state: {enabled}", LogLevel.Debug);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Reset semua button states ke default.
+        /// </summary>
+        public void ResetAllStates()
+        {
+            List<ModKeyButton> buttons = ExecuteThreadSafe(() =>
+                _registeredButtons.Values.ToList()
+            );
+
+            foreach (var button in buttons)
+            {
+                try
+                {
+                    button.ResetState();
+                }
+                catch (Exception ex)
+                {
+                    _monitor.Log($"Error resetting state for '{button.UniqueId}': {ex.Message}", LogLevel.Error);
+                }
+            }
+
+            _monitor.Log($"Reset state for {buttons.Count} button(s)", LogLevel.Debug);
+            RaiseRegistryChangedEvent(ButtonEventArgs.RegistryChangeType.StateReset);
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // EVENT HELPERS
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        private void RaiseButtonRegisteredEvent(ModKeyButton button, bool isUpdate)
+        {
+            try
+            {
+                ButtonRegistered?.Invoke(this, new ButtonEventArgs.ButtonRegisteredEventArgs(button, isUpdate));
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Error in ButtonRegistered event handler: {ex.Message}", LogLevel.Error);
+            }
+        }
+
+        private void RaiseButtonUnregisteredEvent(string uniqueId, string modId)
+        {
+            try
+            {
+                ButtonUnregistered?.Invoke(this, new ButtonEventArgs.ButtonUnregisteredEventArgs(uniqueId, modId));
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Error in ButtonUnregistered event handler: {ex.Message}", LogLevel.Error);
+            }
+        }
+
+        private void RaiseButtonTriggeredEvent(ButtonEventArgs.ButtonTriggeredEventArgs args)
+        {
+            try
+            {
+                ButtonTriggered?.Invoke(this, args);
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Error in ButtonTriggered event handler: {ex.Message}", LogLevel.Error);
+            }
+        }
+
+        private void RaiseButtonToggledEvent(ModKeyButton button, bool newState, bool oldState)
+        {
+            try
+            {
+                ButtonToggled?.Invoke(this, new ButtonEventArgs.ButtonToggledEventArgs(button, newState, oldState));
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Error in ButtonToggled event handler: {ex.Message}", LogLevel.Error);
+            }
+        }
+
+        private void RaiseRegistryChangedEvent(ButtonEventArgs.RegistryChangeType changeType)
+        {
+            try
+            {
+                var args = new ButtonEventArgs.RegistryChangedEventArgs(changeType, Count, ModCount);
+                RegistryChanged?.Invoke(this, args);
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Error in RegistryChanged event handler: {ex.Message}", LogLevel.Error);
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // THREAD SAFETY HELPERS
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        /// <summary>
+        /// Execute function dengan thread safety.
+        /// </summary>
+        private T ExecuteThreadSafe<T>(Func<T> func)
+        {
+            lock (_lock)
+            {
+                return func();
             }
         }
 
         /// <summary>
-        /// Reset semua button states
+        /// Execute action dengan thread safety.
         /// </summary>
-        public void ResetAllStates()
+        private void ExecuteThreadSafe(Action action)
         {
             lock (_lock)
             {
-                foreach (var button in _registeredButtons.Values)
-                {
-                    button.ResetState();
-                }
+                action();
             }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // DEBUG & DIAGNOSTICS
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        /// <summary>
+        /// Mendapatkan informasi diagnostik registry.
+        /// </summary>
+        public string GetDiagnostics()
+        {
+            return ExecuteThreadSafe(() =>
+            {
+                int totalButtons = _registeredButtons.Count;
+                int visibleButtons = _registeredButtons.Values.Count(b => b.ShouldShow());
+                int totalMods = _modButtons.Count;
+                int activeCategories = _categoryButtons.Count(kv => kv.Value.Count > 0);
+
+                return $"Registry Diagnostics:\n" +
+                       $"  Total Buttons: {totalButtons} ({visibleButtons} visible)\n" +
+                       $"  Total Mods: {totalMods}\n" +
+                       $"  Active Categories: {activeCategories}";
+            });
         }
     }
 }

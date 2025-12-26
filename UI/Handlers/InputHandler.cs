@@ -104,8 +104,10 @@ namespace AddonsMobile.UI.Handlers
             Game1.freezeControls = false;
         }
 
-        public void OnMenuButtonPressed(string buttonId)
+        public void OnMenuButtonPressed(string buttonId, SButton button)
         {
+            _helper.Input.Suppress(button);
+            _monitor.Log($"Menu button '{buttonId}' pressed - input suppressed", LogLevel.Debug);
             OnButtonPressed?.Invoke(buttonId);
         }
 

@@ -3,7 +3,7 @@
 [![SMAPI](https://img.shields.io/badge/SMAPI-4.0+-blue.svg)](https://smapi.io/)
 [![Stardew Valley](https://img.shields.io/badge/Stardew%20Valley-1.6+-green.svg)](https://www.stardewvalley.net/)
 [![Platform](https://img.shields.io/badge/Platform-Android-orange.svg)]()
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 
 A powerful framework for Stardew Valley mobile modding that provides a unified button/hotkey system for Android players. This framework allows mod developers to easily add touch-friendly buttons that replace keyboard shortcuts.
 
@@ -22,7 +22,6 @@ A powerful framework for Stardew Valley mobile modding that provides a unified b
   - [Best Practices](#best-practices)
 - [Examples](#-examples)
 - [Troubleshooting](#-troubleshooting)
-- [Contributing](#-contributing)
 
 ---
 
@@ -56,13 +55,6 @@ A powerful framework for Stardew Valley mobile modding that provides a unified b
 1. Download the latest release from [Releases](../../releases)
 2. Extract `AddonsMobile` folder to your `Mods` directory
 3. Launch the game - the FAB will appear when you load a save
-
-Mods/
-├── AddonsMobile/
-│   ├── manifest.json
-│   ├── AddonsMobile.dll
-│   └── config.json (generated on first run)
-└── ... other mods
 
 ---
 

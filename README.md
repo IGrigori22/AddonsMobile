@@ -1,6 +1,3 @@
-# AddonsMobile Framework - README.md
-
-```markdown
 # 📱 AddonsMobile Framework
 
 [![SMAPI](https://img.shields.io/badge/SMAPI-4.0+-blue.svg)](https://smapi.io/)
@@ -26,7 +23,6 @@ A powerful framework for Stardew Valley mobile modding that provides a unified b
 - [Examples](#-examples)
 - [Troubleshooting](#-troubleshooting)
 - [Contributing](#-contributing)
-- [License](#-license)
 
 ---
 
@@ -61,14 +57,12 @@ A powerful framework for Stardew Valley mobile modding that provides a unified b
 2. Extract `AddonsMobile` folder to your `Mods` directory
 3. Launch the game - the FAB will appear when you load a save
 
-```
 Mods/
 ├── AddonsMobile/
 │   ├── manifest.json
 │   ├── AddonsMobile.dll
 │   └── config.json (generated on first run)
 └── ... other mods
-```
 
 ---
 
@@ -961,36 +955,6 @@ dotnet build
 
 ---
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-```
-MIT License
-
-Copyright (c) 2024 [Your Name]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
----
-
 ## 🙏 Credits
 
 - **SMAPI Team** - For the amazing modding API
@@ -1010,42 +974,6 @@ SOFTWARE.
 <p align="center">
   Made with ❤️ for the Stardew Valley modding community
 </p>
-```
-
----
-
-## 📋 File Tambahan yang Direkomendasikan
-
-### CHANGELOG.md
-
-```markdown
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [1.0.0] - 2024-XX-XX
-
-### Added
-- Initial release
-- Floating Action Button (FAB) system
-- Three button types: Momentary, Toggle, Hold
-- Category-based organization
-- Builder pattern API
-- Conditional visibility and enabled states
-- Custom icon support
-- Priority-based sorting
-- Event system for button registration
-- Generic Mod Config Menu integration
-- Console commands for debugging
-
-### API
-- `IMobileAddonsAPI` interface for mod integration
-- `IButtonBuilder` fluent builder interface
-- `KeyCategory` enum for button categorization
-- `ButtonType` enum for behavior definition
 ```
 
 ---

@@ -1,144 +1,135 @@
-﻿# 📱 Addons Mobile - Virtual Button Manager for Stardew Valley Android
+# AddonsMobile Framework - README.md
 
-A centralized virtual button manager for Stardew Valley Android mods. Allows mod developers to register custom buttons without keybind conflicts.
+```markdown
+# 📱 AddonsMobile Framework
 
-![SMAPI](https://img.shields.io/badge/SMAPI-4.0%2B-green)
-![Platform](https://img.shields.io/badge/Platform-Android-blue)
-![Version](https://img.shields.io/badge/Version-1.0.0-orange)
+[![SMAPI](https://img.shields.io/badge/SMAPI-4.0+-blue.svg)](https://smapi.io/)
+[![Stardew Valley](https://img.shields.io/badge/Stardew%20Valley-1.6+-green.svg)](https://www.stardewvalley.net/)
+[![Platform](https://img.shields.io/badge/Platform-Android-orange.svg)]()
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+A powerful framework for Stardew Valley mobile modding that provides a unified button/hotkey system for Android players. This framework allows mod developers to easily add touch-friendly buttons that replace keyboard shortcuts.
 
 ---
 
 ## 📋 Table of Contents
 
+- [Features](#-features)
+- [Installation](#-installation)
 - [For Players](#-for-players)
 - [For Mod Developers](#-for-mod-developers)
-  - [Quick Start](#-quick-start)
-  - [Step-by-Step Guide](#-step-by-step-guide)
-  - [API Reference](#-api-reference)
-  - [Full Example](#-full-example)
-- [Configuration](#-configuration)
-- [FAQ](#-faq)
+  - [Quick Start](#quick-start)
+  - [API Reference](#api-reference)
+  - [Button Types](#button-types)
+  - [Advanced Usage](#advanced-usage)
+  - [Best Practices](#best-practices)
+- [Examples](#-examples)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+---
+
+## ✨ Features
+
+### For Players
+- 🎮 **Floating Action Button (FAB)** - Expandable button menu for quick access
+- 📍 **Draggable Position** - Place the FAB anywhere on screen
+- 🎨 **Customizable Appearance** - Adjust size, opacity, and colors
+- 📂 **Category Grouping** - Buttons organized by function
+- ⚙️ **GMCM Support** - Easy configuration via Generic Mod Config Menu
+
+### For Mod Developers
+- 🔌 **Simple API** - Register buttons with just a few lines of code
+- 🏗️ **Builder Pattern** - Fluent interface for complex button configurations
+- 🔄 **Three Button Types** - Momentary, Toggle, and Hold behaviors
+- 🎯 **Conditional Visibility** - Show/hide buttons based on game state
+- 📊 **Priority System** - Control button ordering
+- 🔔 **Event System** - React to button registration/unregistration
+- 🧵 **Thread-Safe** - Safe for async operations
+
+---
+
+## 📥 Installation
+
+### Requirements
+- Stardew Valley 1.6+ (Android)
+- SMAPI 4.0+ for Android
+
+### Steps
+1. Download the latest release from [Releases](../../releases)
+2. Extract `AddonsMobile` folder to your `Mods` directory
+3. Launch the game - the FAB will appear when you load a save
+
+```
+Mods/
+├── AddonsMobile/
+│   ├── manifest.json
+│   ├── AddonsMobile.dll
+│   └── config.json (generated on first run)
+└── ... other mods
+```
 
 ---
 
 ## 🎮 For Players
 
-### What does this mod do?
+### Basic Usage
 
-This mod adds a **floating action button (FAB)** on your screen. When you tap it, a menu expands showing buttons from other mods that support Addons Mobile.
+1. **Open Button Menu**: Tap the floating button (FAB) on screen
+2. **Use Buttons**: Tap any button in the expanded menu
+3. **Move FAB**: Long-press and drag to reposition
+4. **Close Menu**: Tap outside the menu or tap FAB again
 
+### Configuration
 
+Configuration can be done via:
+- **Generic Mod Config Menu** (recommended)
+- **config.json** file in the mod folder
 
-
-
-
-### Installation
-
-1. Install [SMAPI](https://github.com/NRTnarathip/SMAPI-Android-1.6) for Android
-2. Download **Addons Mobile** from Nexus Mods
-3. Extract to `StardewValley/Mods/` folder
-4. Done! The FAB will appear when you load a save
+| Setting | Description | Default |
+|---------|-------------|---------|
+| `ButtonSize` | Size of buttons in pixels | `64` |
+| `Opacity` | Transparency (0.0 - 1.0) | `0.9` |
+| `ExpandDirection` | Menu expansion direction | `Up` |
+| `ShowTooltips` | Display button names on hover | `true` |
 
 ---
 
 ## 👨‍💻 For Mod Developers
 
-### 🚀 Quick Start
+### Quick Start
 
-**3 simple steps to add your button:**
+#### Step 1: Add Dependency
+
+In your mod's `manifest.json`:
+
+```json
+{
+  "Name": "Your Mod Name",
+  "Author": "Your Name",
+  "Version": "1.0.0",
+  "UniqueID": "YourName.YourModName",
+  "Dependencies": [
+    {
+      "UniqueID": "YourName.AddonsMobile",
+      "MinimumVersion": "1.0.0",
+      "IsRequired": false
+    }
+  ]
+}
+```
+
+> **Note**: Set `IsRequired: false` if your mod should work on desktop without AddonsMobile.
+
+#### Step 2: Get the API
 
 ```csharp
-// 1. Get the API
-var api = Helper.ModRegistry.GetApi<IMobileAddonsAPI>("Grigori22.AddonsMobile");
-
-// 2. Create and register your button
-api?.CreateButton("YourMod.OpenMenu", ModManifest.UniqueID)
-    .WithDisplayName("My Menu")
-    .OnPressed(() => OpenYourMenu())
-    .Register();
-
-// 3. That's it! ✅
-
-
-
-
-📖 Step-by-Step Guide
-Step 1: Add Dependency (Optional)
-In your manifest.json, add Addons Mobile as an optional dependency:
-
-{
-    "Name": "Your Mod Name",
-    "Author": "Your Name",
-    "Version": "1.0.0",
-    "UniqueID": "YourName.YourMod",
-    "EntryDll": "YourMod.dll",
-    "MinimumApiVersion": "4.0.0",
-    "Dependencies": [
-        {
-            "UniqueID": "IGrigori22.AddonsMobile",
-            "IsRequired": false
-        }
-    ]
-}
-
-
-Step 2: Copy the API Interface
-Create a new file API/IMobileAddonsAPI.cs in your project:
-
-namespace YourMod.API
-{
-    public interface IMobileAddonsAPI
-    {
-        string Version { get; }
-        bool IsMobilePlatform { get; }
-        
-        IButtonBuilder CreateButton(string uniqueId, string modId);
-        bool UnregisterButton(string uniqueId);
-        void UnregisterAllFromMod(string modId);
-        bool SetButtonEnabled(string uniqueId, bool enabled);
-        bool TriggerButton(string uniqueId);
-        int GetRegisteredButtonCount();
-        bool IsButtonRegistered(string uniqueId);
-        void RefreshUI();
-        void SetVisible(bool visible);
-    }
-
-    public interface IButtonBuilder
-    {
-        IButtonBuilder WithDisplayName(string name);
-        IButtonBuilder WithDescription(string description);
-        IButtonBuilder WithCategory(KeyCategory category);
-        IButtonBuilder WithPriority(int priority);
-        IButtonBuilder WithCooldown(int milliseconds);
-        IButtonBuilder WithVisibilityCondition(Func<bool> condition);
-        IButtonBuilder WithOriginalKeybind(string keybind);
-        IButtonBuilder OnPressed(Action action);
-        bool Register();
-    }
-
-    public enum KeyCategory
-    {
-        Menu,
-        Farming,
-        Tools,
-        Cheats,
-        Information,
-        Social,
-        Inventory,
-        Teleport,
-        Miscellaneous
-    }
-}
-
-
-Step 3: Get API and Register Buttons
-In your ModEntry.cs:
-
-using YourMod.API;
+using StardewModdingAPI;
 
 public class ModEntry : Mod
 {
-    private IMobileAddonsAPI? _mobileApi;
+    private IMobileAddonsAPI? _mobileAPI;
 
     public override void Entry(IModHelper helper)
     {
@@ -148,255 +139,913 @@ public class ModEntry : Mod
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
         // Get the API
-        _mobileApi = Helper.ModRegistry.GetApi<IMobileAddonsAPI>("IGrigori22.AddonsMobile");
+        _mobileAPI = Helper.ModRegistry.GetApi<IMobileAddonsAPI>("YourName.AddonsMobile");
+        
+        if (_mobileAPI == null)
+        {
+            Monitor.Log("AddonsMobile not installed - mobile buttons disabled", LogLevel.Info);
+            return;
+        }
 
-        if (_mobileApi != null)
+        // Check if running on mobile
+        if (!_mobileAPI.IsMobilePlatform)
         {
-            RegisterMobileButtons();
-            Monitor.Log($"Connected to Addons Mobile v{_mobileApi.Version}", LogLevel.Info);
+            Monitor.Log("Not on mobile platform - skipping button registration", LogLevel.Debug);
+            return;
         }
-        else
-        {
-            Monitor.Log("Addons Mobile not installed", LogLevel.Debug);
-        }
+
+        // Register your buttons here
+        RegisterMobileButtons();
     }
 
     private void RegisterMobileButtons()
     {
-        _mobileApi!.CreateButton("YourMod.OpenMenu", ModManifest.UniqueID)
-            .WithDisplayName("My Menu")
-            .WithDescription("Opens my custom menu")
-            .WithCategory(KeyCategory.Menu)
-            .WithPriority(50)
-            .OnPressed(() => 
-            {
-                Game1.activeClickableMenu = new YourCustomMenu();
-            })
-            .Register();
+        // Simple button example
+        _mobileAPI!.RegisterSimpleButton(
+            uniqueId: "YourName.YourModName.OpenMenu",
+            modId: ModManifest.UniqueID,
+            displayName: "Open Menu",
+            onPress: () => OpenYourMenu(),
+            category: KeyCategory.Menu
+        );
     }
 }
+```
 
+#### Step 3: Copy the Interface
 
-📚 API Reference
-Button Builder Methods
-Method	Description	Required
-| `.WithDisplayName(string)` | `✅ Yes` | Button label shown in menu |
-| `.WithDisplayName(string)` | `✅ Yes` | Button label shown in menu | 
-| `.WithDescription(string)` | `No` | Tooltip description	|
-| `.WithCategory(KeyCategory)` | `No` |	Category for grouping	|
-| `.WithPriority(int)` | `No` |	Higher = shown first (default: 0)	|
-| `.WithCooldown(int)` | `No` |	Milliseconds between presses (default: 250)	|
-| `.WithVisibilityCondition(Func<bool>)` | `No` |	When to show button	|
-| `.WithOriginalKeybind(string)` | `No` |	Desktop keybind reference	|
-| `.OnPressed(Action)` | `✅ Yes` |	Action when tapped	|
-| `.Register()` | `✅ Yes` |	Finalize registration	|
+Copy the `IMobileAddonsAPI` interface to your mod project:
 
+<details>
+<summary>📄 Click to expand IMobileAddonsAPI.cs</summary>
 
+```csharp
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 
+namespace YourModNamespace
+{
+    /// <summary>
+    /// Public API for AddonsMobile Framework.
+    /// Copy this interface to your mod project.
+    /// </summary>
+    public interface IMobileAddonsAPI
+    {
+        // ═══════════════════════════════════════════════════════════
+        // METADATA
+        // ═══════════════════════════════════════════════════════════
+        
+        /// <summary>API version (semantic versioning)</summary>
+        string ApiVersion { get; }
+        
+        /// <summary>True if running on Android</summary>
+        bool IsMobilePlatform { get; }
+        
+        /// <summary>True if button UI is currently visible</summary>
+        bool IsVisible { get; }
 
+        // ═══════════════════════════════════════════════════════════
+        // SIMPLE REGISTRATION
+        // ═══════════════════════════════════════════════════════════
+        
+        /// <summary>
+        /// Quick way to register a simple momentary button.
+        /// </summary>
+        bool RegisterSimpleButton(
+            string uniqueId,
+            string modId,
+            string displayName,
+            Action onPress,
+            KeyCategory category = KeyCategory.Miscellaneous
+        );
 
-KeyCategory.Menu          // Menu/UI mods
-KeyCategory.Farming       // Farming tools
-KeyCategory.Tools         // Tool utilities  
-KeyCategory.Cheats        // Cheat/debug mods
-KeyCategory.Information   // Info overlays
-KeyCategory.Social        // NPC/relationship mods
-KeyCategory.Inventory     // Inventory management
-KeyCategory.Teleport      // Warp/teleport mods
-KeyCategory.Miscellaneous // Other (default)
+        // ═══════════════════════════════════════════════════════════
+        // BUILDER REGISTRATION
+        // ═══════════════════════════════════════════════════════════
+        
+        /// <summary>
+        /// Create a button builder for advanced configuration.
+        /// </summary>
+        IButtonBuilder CreateButton(string uniqueId, string modId);
 
+        // ═══════════════════════════════════════════════════════════
+        // MANAGEMENT
+        // ═══════════════════════════════════════════════════════════
+        
+        bool UnregisterButton(string uniqueId);
+        int UnregisterAllFromMod(string modId);
+        bool SetButtonEnabled(string uniqueId, bool enabled);
+        bool SetToggleState(string uniqueId, bool toggled, bool invokeCallback = false);
 
-// Check if on mobile
-bool isMobile = api.IsMobilePlatform;
+        // ═══════════════════════════════════════════════════════════
+        // QUERIES
+        // ═══════════════════════════════════════════════════════════
+        
+        bool TriggerButton(string uniqueId);
+        bool IsButtonRegistered(string uniqueId);
+        int GetRegisteredButtonCount();
+        int GetButtonCountForMod(string modId);
 
-// Get API version
-string version = api.Version;
+        // ═══════════════════════════════════════════════════════════
+        // UI CONTROL
+        // ═══════════════════════════════════════════════════════════
+        
+        void RefreshUI();
+        void SetVisible(bool visible);
 
+        // ═══════════════════════════════════════════════════════════
+        // EVENTS
+        // ═══════════════════════════════════════════════════════════
+        
+        event EventHandler<ButtonRegisteredEventArgs> ButtonRegistered;
+        event EventHandler<ButtonUnregisteredEventArgs> ButtonUnregistered;
+    }
+
+    /// <summary>
+    /// Fluent builder for creating buttons with advanced options.
+    /// </summary>
+    public interface IButtonBuilder
+    {
+        // Basic
+        IButtonBuilder WithDisplayName(string name);
+        IButtonBuilder WithDescription(string description);
+        IButtonBuilder WithCategory(KeyCategory category);
+        IButtonBuilder WithPriority(int priority);
+        IButtonBuilder WithKeybind(string keybind);
+
+        // Visual
+        IButtonBuilder WithIcon(Texture2D texture, Rectangle? sourceRect = null);
+        IButtonBuilder WithTint(Color normalColor, Color? toggledColor = null);
+
+        // Behavior
+        IButtonBuilder WithType(ButtonType type);
+        IButtonBuilder WithCooldown(int milliseconds);
+        IButtonBuilder WithVisibilityCondition(Func<bool> condition);
+        IButtonBuilder WithEnabledCondition(Func<bool> condition);
+
+        // Actions
+        IButtonBuilder OnPress(Action action);
+        IButtonBuilder OnHold(Action<float> action);
+        IButtonBuilder OnRelease(Action action);
+        IButtonBuilder OnToggle(Action<bool> action);
+
+        // Finalize
+        bool Register();
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // ENUMS
+    // ═══════════════════════════════════════════════════════════════
+
+    public enum ButtonType
+    {
+        /// <summary>Single press, executes once</summary>
+        Momentary,
+        
+        /// <summary>Toggle on/off state</summary>
+        Toggle,
+        
+        /// <summary>Continuous action while held</summary>
+        Hold
+    }
+
+    public enum KeyCategory
+    {
+        /// <summary>Movement and navigation</summary>
+        Movement,
+        
+        /// <summary>Tools and items</summary>
+        Tools,
+        
+        /// <summary>Menus and UI</summary>
+        Menu,
+        
+        /// <summary>Social and multiplayer</summary>
+        Social,
+        
+        /// <summary>Combat and actions</summary>
+        Combat,
+        
+        /// <summary>Other functions</summary>
+        Miscellaneous
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // EVENT ARGS
+    // ═══════════════════════════════════════════════════════════════
+
+    public class ButtonRegisteredEventArgs : EventArgs
+    {
+        public string UniqueId { get; }
+        public string ModId { get; }
+        public string DisplayName { get; }
+        public bool IsUpdate { get; }
+
+        public ButtonRegisteredEventArgs(string uniqueId, string modId, string displayName, bool isUpdate)
+        {
+            UniqueId = uniqueId;
+            ModId = modId;
+            DisplayName = displayName;
+            IsUpdate = isUpdate;
+        }
+    }
+
+    public class ButtonUnregisteredEventArgs : EventArgs
+    {
+        public string UniqueId { get; }
+        public string ModId { get; }
+
+        public ButtonUnregisteredEventArgs(string uniqueId, string modId)
+        {
+            UniqueId = uniqueId;
+            ModId = modId;
+        }
+    }
+}
+```
+
+</details>
+
+---
+
+### API Reference
+
+#### Registration Methods
+
+##### `RegisterSimpleButton()`
+
+Quick registration for simple momentary buttons.
+
+```csharp
+bool RegisterSimpleButton(
+    string uniqueId,      // Unique button ID (recommended: "ModId.ButtonName")
+    string modId,         // Your mod's UniqueID
+    string displayName,   // Text shown in UI
+    Action onPress,       // Action when pressed
+    KeyCategory category  // Category for grouping (default: Miscellaneous)
+);
+```
+
+**Returns**: `true` if registration successful, `false` if ID already exists.
+
+##### `CreateButton()`
+
+Create a builder for advanced button configuration.
+
+```csharp
+IButtonBuilder CreateButton(string uniqueId, string modId);
+```
+
+---
+
+#### IButtonBuilder Methods
+
+| Method | Description |
+|--------|-------------|
+| `WithDisplayName(string)` | Set the display name (required) |
+| `WithDescription(string)` | Set tooltip description |
+| `WithCategory(KeyCategory)` | Set category for grouping |
+| `WithPriority(int)` | Set sort priority (0-1000, higher = first) |
+| `WithKeybind(string)` | Set original keybind for reference |
+| `WithIcon(Texture2D, Rectangle?)` | Set custom icon texture |
+| `WithTint(Color, Color?)` | Set normal and toggled colors |
+| `WithType(ButtonType)` | Set button behavior type |
+| `WithCooldown(int)` | Set press cooldown in milliseconds |
+| `WithVisibilityCondition(Func<bool>)` | Set when button is visible |
+| `WithEnabledCondition(Func<bool>)` | Set when button is enabled |
+| `OnPress(Action)` | Set press action |
+| `OnHold(Action<float>)` | Set hold action (receives delta time) |
+| `OnRelease(Action)` | Set release action |
+| `OnToggle(Action<bool>)` | Set toggle action (receives new state) |
+| `Register()` | Register the button (call last) |
+
+---
+
+#### Management Methods
+
+```csharp
+// Remove a specific button
+bool UnregisterButton(string uniqueId);
+
+// Remove all buttons from a mod
+int UnregisterAllFromMod(string modId);
+
+// Enable/disable a button
+bool SetButtonEnabled(string uniqueId, bool enabled);
+
+// Set toggle state programmatically
+bool SetToggleState(string uniqueId, bool toggled, bool invokeCallback = false);
+
+// Trigger a button programmatically
+bool TriggerButton(string uniqueId);
+```
+
+---
+
+#### Query Methods
+
+```csharp
 // Check if button exists
-bool exists = api.IsButtonRegistered("YourMod.ButtonId");
+bool IsButtonRegistered(string uniqueId);
 
-// Enable/disable button
-api.SetButtonEnabled("YourMod.ButtonId", false);
+// Get total button count
+int GetRegisteredButtonCount();
 
-// Remove button
-api.UnregisterButton("YourMod.ButtonId");
+// Get button count for a specific mod
+int GetButtonCountForMod(string modId);
+```
 
-// Remove all your buttons
-api.UnregisterAllFromMod(ModManifest.UniqueID);
+---
 
-// Trigger button programmatically
-api.TriggerButton("YourMod.ButtonId");
+#### UI Control
 
-// Refresh UI after changes
-api.RefreshUI();
+```csharp
+// Refresh button display (after bulk changes)
+void RefreshUI();
 
-// Show/hide the FAB
-api.SetVisible(false);
+// Show/hide all buttons
+void SetVisible(bool visible);
 
+// Check visibility
+bool IsVisible { get; }
+```
 
-💡 Full Example
-Here's a complete example with multiple buttons and fallback support:
+---
 
+### Button Types
+
+#### Momentary (Default)
+
+Single press button. Action executes once per tap.
+
+```csharp
+api.CreateButton("MyMod.UseItem", manifest.UniqueID)
+    .WithDisplayName("Use Item")
+    .WithType(ButtonType.Momentary)  // Optional, this is default
+    .OnPress(() => UseCurrentItem())
+    .Register();
+```
+
+**Use cases**: Open menu, use item, trigger one-time action
+
+---
+
+#### Toggle
+
+On/Off state button. Toggles between two states.
+
+```csharp
+api.CreateButton("MyMod.AutoRun", manifest.UniqueID)
+    .WithDisplayName("Auto Run")
+    .WithType(ButtonType.Toggle)
+    .WithTint(Color.White, Color.LightGreen)  // Normal, Toggled
+    .OnToggle(isOn => {
+        if (isOn)
+            StartAutoRun();
+        else
+            StopAutoRun();
+    })
+    .Register();
+```
+
+**Use cases**: Enable/disable features, toggle modes
+
+---
+
+#### Hold
+
+Continuous action while held. Good for movement or charging.
+
+```csharp
+api.CreateButton("MyMod.Sprint", manifest.UniqueID)
+    .WithDisplayName("Sprint")
+    .WithType(ButtonType.Hold)
+    .OnPress(() => StartSprinting())
+    .OnHold(deltaTime => {
+        // Called every frame while held
+        DrainStamina(deltaTime * 2f);
+    })
+    .OnRelease(() => StopSprinting())
+    .Register();
+```
+
+**Use cases**: Sprint, charge attack, continuous movement
+
+---
+
+### Advanced Usage
+
+#### Conditional Visibility
+
+Show buttons only when relevant:
+
+```csharp
+api.CreateButton("MyMod.FishingCast", manifest.UniqueID)
+    .WithDisplayName("Cast")
+    .WithCategory(KeyCategory.Tools)
+    .WithVisibilityCondition(() => 
+        Game1.player.CurrentTool is FishingRod)
+    .OnPress(() => CastFishingRod())
+    .Register();
+```
+
+#### Conditional Enabled State
+
+Disable buttons based on conditions:
+
+```csharp
+api.CreateButton("MyMod.SpecialAbility", manifest.UniqueID)
+    .WithDisplayName("Special")
+    .WithEnabledCondition(() => 
+        Game1.player.Stamina >= 20)
+    .OnPress(() => UseSpecialAbility())
+    .Register();
+```
+
+#### Custom Icons
+
+Use your own textures:
+
+```csharp
+// Load texture in Entry or GameLaunched
+var iconTexture = Helper.ModContent.Load<Texture2D>("assets/icons.png");
+
+api.CreateButton("MyMod.MyButton", manifest.UniqueID)
+    .WithDisplayName("My Button")
+    .WithIcon(iconTexture, new Rectangle(0, 0, 16, 16))  // Source rect in spritesheet
+    .OnPress(() => DoSomething())
+    .Register();
+```
+
+#### Priority System
+
+Control button order (higher priority = appears first):
+
+```csharp
+// This appears first
+api.CreateButton("MyMod.Important", manifest.UniqueID)
+    .WithDisplayName("Important")
+    .WithPriority(100)
+    .OnPress(() => ImportantAction())
+    .Register();
+
+// This appears after
+api.CreateButton("MyMod.Secondary", manifest.UniqueID)
+    .WithDisplayName("Secondary")
+    .WithPriority(50)
+    .OnPress(() => SecondaryAction())
+    .Register();
+```
+
+#### Event Handling
+
+React to button changes:
+
+```csharp
+api.ButtonRegistered += (sender, e) => {
+    Monitor.Log($"Button registered: {e.DisplayName} from {e.ModId}");
+};
+
+api.ButtonUnregistered += (sender, e) => {
+    Monitor.Log($"Button unregistered: {e.UniqueId}");
+};
+```
+
+#### Dynamic Button Updates
+
+Update buttons at runtime:
+
+```csharp
+// Disable during cutscenes
+helper.Events.GameLoop.UpdateTicked += (s, e) => {
+    if (Game1.eventUp)
+        api.SetButtonEnabled("MyMod.MyButton", false);
+    else
+        api.SetButtonEnabled("MyMod.MyButton", true);
+};
+```
+
+---
+
+### Best Practices
+
+#### ✅ DO
+
+```csharp
+// ✅ Use consistent naming: "ModId.ButtonName"
+api.RegisterSimpleButton(
+    uniqueId: "AuthorName.ModName.ButtonName",
+    modId: ModManifest.UniqueID,
+    // ...
+);
+
+// ✅ Check platform before registering
+if (_mobileAPI?.IsMobilePlatform == true)
+{
+    RegisterMobileButtons();
+}
+
+// ✅ Use appropriate categories
+.WithCategory(KeyCategory.Tools)    // For tool-related actions
+.WithCategory(KeyCategory.Menu)     // For UI/menu actions
+.WithCategory(KeyCategory.Movement) // For movement actions
+
+// ✅ Provide meaningful descriptions
+.WithDescription("Opens the cooking menu when near a kitchen")
+
+// ✅ Set appropriate cooldowns for spam-prone actions
+.WithCooldown(500)  // 500ms between presses
+
+// ✅ Clean up when needed
+helper.Events.GameLoop.ReturnedToTitle += (s, e) => {
+    _mobileAPI?.UnregisterAllFromMod(ModManifest.UniqueID);
+};
+
+// ✅ Handle null API gracefully
+if (_mobileAPI == null) return;
+```
+
+#### ❌ DON'T
+
+```csharp
+// ❌ Don't use duplicate IDs
+api.RegisterSimpleButton("button1", ...);  // Too generic!
+
+// ❌ Don't register before GameLaunched
+public override void Entry(IModHelper helper)
+{
+    var api = Helper.ModRegistry.GetApi<IMobileAddonsAPI>(...);
+    api.RegisterSimpleButton(...);  // Too early! API might not exist yet
+}
+
+// ❌ Don't forget to call Register() on builders
+api.CreateButton("MyMod.Button", modId)
+    .WithDisplayName("Button")
+    .OnPress(() => DoSomething());
+    // Missing .Register() - button won't be created!
+
+// ❌ Don't block in callbacks
+.OnHold(deltaTime => {
+    Thread.Sleep(100);  // Never do this!
+})
+
+// ❌ Don't ignore exceptions in callbacks
+.OnPress(() => {
+    // Always handle potential errors
+    try {
+        RiskyOperation();
+    } catch (Exception ex) {
+        Monitor.Log($"Error: {ex.Message}", LogLevel.Error);
+    }
+})
+```
+
+---
+
+## 📚 Examples
+
+### Example 1: Simple Mod Integration
+
+```csharp
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
-using YourMod.API;
 
-namespace YourMod
+namespace MySimpleMod
 {
     public class ModEntry : Mod
     {
-        private IMobileAddonsAPI? _mobileApi;
+        private IMobileAddonsAPI? _mobileAPI;
 
         public override void Entry(IModHelper helper)
         {
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-            helper.Events.Input.ButtonPressed += OnButtonPressed;
         }
 
         private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
         {
-            // Try to get Addons Mobile API
-            _mobileApi = Helper.ModRegistry.GetApi<IMobileAddonsAPI>(
-                "Grigori22.AddonsMobile"
-            );
-
-            if (_mobileApi != null)
-            {
-                RegisterMobileButtons();
-                Monitor.Log("Mobile buttons registered!", LogLevel.Info);
-            }
-        }
-
-        private void RegisterMobileButtons()
-        {
-            if (_mobileApi == null) return;
-
-            // Button 1: Open Menu
-            _mobileApi.CreateButton("MyMod.OpenMenu", ModManifest.UniqueID)
-                .WithDisplayName("📋 Menu")
-                .WithDescription("Open the main menu")
-                .WithCategory(KeyCategory.Menu)
-                .WithPriority(100)
-                .WithOriginalKeybind("F5")
-                .OnPressed(OpenMainMenu)
-                .Register();
-
-            // Button 2: Quick Action
-            _mobileApi.CreateButton("MyMod.QuickHeal", ModManifest.UniqueID)
-                .WithDisplayName("❤️ Heal")
-                .WithDescription("Restore health")
-                .WithCategory(KeyCategory.Cheats)
-                .WithPriority(50)
-                .WithCooldown(1000) // 1 second cooldown
-                .OnPressed(() => 
-                {
-                    Game1.player.health = Game1.player.maxHealth;
-                    Game1.addHUDMessage(new HUDMessage("Healed!", HUDMessage.health_type));
-                })
-                .Register();
-
-            // Button 3: Conditional button (only shows at farm)
-            _mobileApi.CreateButton("MyMod.FarmAction", ModManifest.UniqueID)
-                .WithDisplayName("🌾 Farm")
-                .WithDescription("Farm-only action")
-                .WithCategory(KeyCategory.Farming)
-                .WithPriority(30)
-                .WithVisibilityCondition(() => 
-                    Game1.player?.currentLocation?.IsFarm == true
-                )
-                .OnPressed(DoFarmAction)
-                .Register();
-        }
-
-        // Fallback: Desktop keybind
-        private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
-        {
-            if (!Context.IsWorldReady) return;
-
-            if (e.Button == SButton.F5)
-            {
-                OpenMainMenu();
-                Helper.Input.Suppress(e.Button);
-            }
-        }
-
-        private void OpenMainMenu()
-        {
-            if (!Context.IsWorldReady) return;
+            _mobileAPI = Helper.ModRegistry.GetApi<IMobileAddonsAPI>("AuthorName.AddonsMobile");
             
-            Game1.activeClickableMenu = new MyCustomMenu();
+            if (_mobileAPI?.IsMobilePlatform != true)
+                return;
+
+            // Register a simple button
+            _mobileAPI.RegisterSimpleButton(
+                uniqueId: $"{ModManifest.UniqueID}.ShowInfo",
+                modId: ModManifest.UniqueID,
+                displayName: "Show Info",
+                onPress: ShowPlayerInfo,
+                category: KeyCategory.Menu
+            );
         }
 
-        private void DoFarmAction()
+        private void ShowPlayerInfo()
         {
-            Game1.addHUDMessage(new HUDMessage("Farm action!", HUDMessage.newQuest_type));
+            var player = StardewValley.Game1.player;
+            StardewValley.Game1.addHUDMessage(
+                new StardewValley.HUDMessage($"Money: {player.Money}g", 2)
+            );
         }
     }
 }
+```
 
+### Example 2: Toggle Feature
 
+```csharp
+private bool _autoEatEnabled = false;
 
-⚙️ Configuration
-Players can configure the FAB in config.json:
-
+private void RegisterMobileButtons()
 {
-    "ButtonPositionX": 95,
-    "ButtonPositionY": 50,
-    "ButtonSize": 64,
-    "MenuButtonSize": 56,
-    "ButtonSpacing": 8,
-    "MaxButtonsPerRow": 4,
-    "ButtonOpacity": 0.85,
-    "ShowButtonLabels": true,
-    "AutoHideInEvents": true,
-    "AnimationDuration": 200,
-    "VerboseLogging": false
+    _mobileAPI!.CreateButton($"{ModManifest.UniqueID}.AutoEat", ModManifest.UniqueID)
+        .WithDisplayName("Auto Eat")
+        .WithDescription("Automatically eat food when health is low")
+        .WithCategory(KeyCategory.Combat)
+        .WithType(ButtonType.Toggle)
+        .WithTint(Color.White, Color.LightGreen)
+        .OnToggle(isEnabled => {
+            _autoEatEnabled = isEnabled;
+            string status = isEnabled ? "enabled" : "disabled";
+            Game1.addHUDMessage(new HUDMessage($"Auto Eat {status}", 2));
+        })
+        .Register();
+}
+```
+
+### Example 3: Context-Sensitive Buttons
+
+```csharp
+private void RegisterMobileButtons()
+{
+    // Only show when holding a tool
+    _mobileAPI!.CreateButton($"{ModManifest.UniqueID}.UseTool", ModManifest.UniqueID)
+        .WithDisplayName("Use Tool")
+        .WithCategory(KeyCategory.Tools)
+        .WithVisibilityCondition(() => Game1.player.CurrentTool != null)
+        .WithEnabledCondition(() => Game1.player.canMove && !Game1.player.UsingTool)
+        .OnPress(() => {
+            // Simulate tool use
+            Game1.pressUseToolButton();
+        })
+        .Register();
+
+    // Only show near animals
+    _mobileAPI.CreateButton($"{ModManifest.UniqueID}.PetAnimal", ModManifest.UniqueID)
+        .WithDisplayName("Pet Animal")
+        .WithCategory(KeyCategory.Social)
+        .WithVisibilityCondition(() => IsNearAnimal())
+        .OnPress(() => PetNearbyAnimal())
+        .Register();
 }
 
+private bool IsNearAnimal()
+{
+    // Check if player is near any farm animal
+    var playerTile = Game1.player.Tile;
+    return Game1.currentLocation?.animals.Values
+        .Any(a => Vector2.Distance(a.Tile, playerTile) < 2f) ?? false;
+}
+```
 
-Setting	Description	Default
-ButtonPositionX	Horizontal position (0-100%)	95
-ButtonPositionY	Vertical position (0-100%)	50
-ButtonSize	FAB size in pixels	64
-MenuButtonSize	Menu button size	56
-ButtonOpacity	Transparency (0.3-1.0)	0.85
-ShowButtonLabels	Show text labels	true
-AutoHideInEvents	Hide during cutscenes	true
+### Example 4: Hold Button for Charging
 
+```csharp
+private float _chargeLevel = 0f;
 
-❓ FAQ
-Q: My button doesn't appear!
-A: Check these things:
+private void RegisterMobileButtons()
+{
+    _mobileAPI!.CreateButton($"{ModManifest.UniqueID}.ChargeAttack", ModManifest.UniqueID)
+        .WithDisplayName("Charge")
+        .WithCategory(KeyCategory.Combat)
+        .WithType(ButtonType.Hold)
+        .OnPress(() => {
+            _chargeLevel = 0f;
+            Game1.addHUDMessage(new HUDMessage("Charging...", 2));
+        })
+        .OnHold(deltaTime => {
+            _chargeLevel = Math.Min(_chargeLevel + deltaTime, 3f);  // Max 3 seconds
+            // Update UI or visual feedback here
+        })
+        .OnRelease(() => {
+            PerformChargedAttack(_chargeLevel);
+            _chargeLevel = 0f;
+        })
+        .Register();
+}
 
-Is Addons Mobile installed?
-Did you call .Register() at the end?
-Did you provide .WithDisplayName() and .OnPressed()?
-Check SMAPI log for errors
-Q: API returns null!
-A: Make sure:
+private void PerformChargedAttack(float charge)
+{
+    int damage = (int)(charge * 10);  // 10 damage per second charged
+    Game1.addHUDMessage(new HUDMessage($"Released! Damage: {damage}", 2));
+}
+```
 
-Addons Mobile is installed in Mods folder
-UniqueID is exactly "Grigori22.AddonsMobile"
-You're getting API in GameLaunched event, not Entry()
-Q: Button shows but can't be clicked!
-A: The FAB only works when:
+### Example 5: Multiple Buttons with Categories
 
-No menu is open
-No event/cutscene is playing
-Player is in the world
-Q: Can I use custom icons?
-A: Yes! Use WithIcon():
+```csharp
+private void RegisterMobileButtons()
+{
+    var modId = ModManifest.UniqueID;
 
+    // Movement category
+    _mobileAPI!.CreateButton($"{modId}.Sprint", modId)
+        .WithDisplayName("Sprint")
+        .WithCategory(KeyCategory.Movement)
+        .WithPriority(100)
+        .WithType(ButtonType.Hold)
+        .OnPress(() => Game1.player.addedSpeed = 3)
+        .OnRelease(() => Game1.player.addedSpeed = 0)
+        .Register();
 
+    // Tools category  
+    _mobileAPI.CreateButton($"{modId}.QuickSlot1", modId)
+        .WithDisplayName("Slot 1")
+        .WithCategory(KeyCategory.Tools)
+        .WithPriority(90)
+        .OnPress(() => Game1.player.CurrentToolIndex = 0)
+        .Register();
 
-.WithIcon(yourTexture, new Rectangle(0, 0, 16, 16))
+    _mobileAPI.CreateButton($"{modId}.QuickSlot2", modId)
+        .WithDisplayName("Slot 2")
+        .WithCategory(KeyCategory.Tools)
+        .WithPriority(89)
+        .OnPress(() => Game1.player.CurrentToolIndex = 1)
+        .Register();
 
+    // Menu category
+    _mobileAPI.CreateButton($"{modId}.OpenInventory", modId)
+        .WithDisplayName("Inventory")
+        .WithCategory(KeyCategory.Menu)
+        .WithPriority(80)
+        .OnPress(() => Game1.activeClickableMenu = new InventoryPage(0, 0, 0, 0))
+        .Register();
+}
+```
 
+---
 
-Q: How do I update button visibility?
-A: Use WithVisibilityCondition():
+## ❓ Troubleshooting
 
-.WithVisibilityCondition(() => SomeCondition())
+### Button Not Appearing
 
-The condition is checked every time the menu expands.
+1. **Check platform**: Buttons only appear on Android
+   ```csharp
+   if (!_mobileAPI.IsMobilePlatform) return;
+   ```
+
+2. **Verify registration timing**: Register in `GameLaunched` event
+   ```csharp
+   helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+   ```
+
+3. **Check visibility condition**: If set, ensure it returns `true`
+
+4. **Verify API is loaded**: Check SMAPI log for AddonsMobile initialization
+
+### Button Not Responding
+
+1. **Check enabled condition**: Ensure it returns `true`
+
+2. **Check cooldown**: Default is 250ms, might need adjustment
+
+3. **Verify action is set**: Builder requires at least one action
+   ```csharp
+   .OnPress(() => DoSomething())  // Required!
+   .Register();
+   ```
+
+### Console Commands (Debug)
+
+```
+> addons_list          # List all registered buttons
+> addons_trigger <id>  # Trigger a button by ID
+> addons_reset         # Reset FAB position
+```
+
+### Common Errors
+
+| Error | Cause | Solution |
+|-------|-------|----------|
+| `API is null` | AddonsMobile not installed | Check dependencies |
+| `UniqueId already exists` | Duplicate button ID | Use unique IDs |
+| `No action defined` | Missing OnPress/OnToggle/OnHold | Add at least one action |
+| `ModId must be set` | Forgot WithModId() | Use modId parameter |
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+### Development Setup
+
+```bash
+git clone https://github.com/YourUsername/AddonsMobile.git
+cd AddonsMobile
+dotnet restore
+dotnet build
+```
+
+### Code Style
+
+- Follow C# naming conventions
+- Use XML documentation for public APIs
+- Add unit tests for new features
+- Update README for API changes
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+```
+MIT License
+
+Copyright (c) 2024 [Your Name]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+## 🙏 Credits
+
+- **SMAPI Team** - For the amazing modding API
+- **ConcernedApe** - For creating Stardew Valley
+- **Android SMAPI Porters** - For making mobile modding possible
+
+---
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](../../issues)
+- **Discussions**: [GitHub Discussions](../../discussions)
+- **Discord**: [Stardew Valley Discord](https://discord.gg/stardewvalley) - #modding-mobile
+
+---
+
+<p align="center">
+  Made with ❤️ for the Stardew Valley modding community
+</p>
+```
+
+---
+
+## 📋 File Tambahan yang Direkomendasikan
+
+### CHANGELOG.md
+
+```markdown
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.0.0] - 2024-XX-XX
+
+### Added
+- Initial release
+- Floating Action Button (FAB) system
+- Three button types: Momentary, Toggle, Hold
+- Category-based organization
+- Builder pattern API
+- Conditional visibility and enabled states
+- Custom icon support
+- Priority-based sorting
+- Event system for button registration
+- Generic Mod Config Menu integration
+- Console commands for debugging
+
+### API
+- `IMobileAddonsAPI` interface for mod integration
+- `IButtonBuilder` fluent builder interface
+- `KeyCategory` enum for button categorization
+- `ButtonType` enum for behavior definition
+```
+
+---

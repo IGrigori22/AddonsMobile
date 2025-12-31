@@ -2,7 +2,7 @@
 using StardewModdingAPI;
 
 
-namespace AddonsMobile.Internal.Core
+namespace AddonsMobile.Core
 {
     /// <summary>
     /// Mengelola loading, validasi, dan penyimpanan konfigurasi mod.

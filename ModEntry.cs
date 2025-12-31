@@ -1,6 +1,6 @@
-﻿using AddonsMobile.API;
-using AddonsMobile.Config;
-using AddonsMobile.Internal.Core;
+﻿using AddonsMobile.Config;
+using AddonsMobile.Core;
+using AddonsMobile.Framework;
 using AddonsMobile.UI;
 using StardewModdingAPI;
 
@@ -26,6 +26,7 @@ namespace AddonsMobile
         #region Entry Point
         public override void Entry(IModHelper helper)
         {
+
             try
             {
                 // Step 1: Setup static references
@@ -122,7 +123,7 @@ namespace AddonsMobile
 
         private void InitializeCoreComponents()
         {
-            _coreInitializer = new CoreInitializer(Helper, Monitor);
+            _coreInitializer = new CoreInitializer(Helper, Monitor, ModManifest);
 
             if (!_coreInitializer.InitializeAll())
             {

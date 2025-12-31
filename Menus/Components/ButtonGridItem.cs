@@ -1,4 +1,4 @@
-﻿using AddonsMobile.Framework;
+﻿using AddonsMobile.Framework.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;

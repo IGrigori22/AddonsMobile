@@ -1,11 +1,12 @@
-﻿using AddonsMobile.Framework;
+﻿using AddonsMobile.Framework.Data;
 using AddonsMobile.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using System.Text.Json.Nodes;
 using FrameworkEvents = AddonsMobile.Framework.Events.ButtonEventArgs;
 
-namespace AddonsMobile.API
+namespace AddonsMobile.Framework
 {
     /// <summary>
     /// Implementasi API untuk mod lain.
@@ -15,20 +16,19 @@ namespace AddonsMobile.API
         // ═══════════════════════════════════════════════════════════════════════════
         // FIELDS
         // ═══════════════════════════════════════════════════════════════════════════
-
+        // 
         private readonly KeyRegistry _registry;
         private readonly MobileButtonManager _buttonManager;
         private readonly IMonitor _monitor;
         private readonly object _lockObject = new object();
+        private readonly IManifest _manifest;
         private bool _disposed = false;
-
-        private const string API_VERSION = "1.0.0";
 
         // ═══════════════════════════════════════════════════════════════════════════
         // PROPERTIES
         // ═══════════════════════════════════════════════════════════════════════════
 
-        public string ApiVersion => API_VERSION;
+        public string ApiVersion => _manifest.Version.ToString();
 
         public bool IsMobilePlatform => Constants.TargetPlatform == GamePlatform.Android;
 
@@ -45,17 +45,20 @@ namespace AddonsMobile.API
         // CONSTRUCTOR
         // ═══════════════════════════════════════════════════════════════════════════
 
-        public MobileAddonsAPI(KeyRegistry registry, MobileButtonManager buttonManager, IMonitor monitor)
+        public MobileAddonsAPI(KeyRegistry registry, MobileButtonManager buttonManager, IMonitor monitor, IManifest manifest)
         {
             _registry = registry ?? throw new ArgumentNullException(nameof(registry));
             _buttonManager = buttonManager ?? throw new ArgumentNullException(nameof(buttonManager));
             _monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
+            _manifest = manifest ?? throw new ArgumentNullException(nameof(manifest));
+
+            ISemanticVersion version = _manifest.Version;
 
             // Subscribe to registry events
             _registry.ButtonRegistered += OnRegistryButtonRegistered;
             _registry.ButtonUnregistered += OnRegistryButtonUnregistered;
 
-            _monitor.Log($"MobileAddonsAPI v{API_VERSION} initialized", LogLevel.Trace);
+            _monitor.Log($"MobileAddonsAPI v{ApiVersion} initialized", LogLevel.Trace);
         }
 
         // ═══════════════════════════════════════════════════════════════════════════
@@ -321,7 +324,7 @@ namespace AddonsMobile.API
         {
             try
             {
-                var current = new Version(API_VERSION);
+                var current = new Version(ApiVersion);
                 var minimum = new Version(minimumVersion);
                 return current >= minimum;
             }

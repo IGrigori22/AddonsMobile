@@ -2,7 +2,7 @@
 using AddonsMobile.Framework.Validation;
 using StardewModdingAPI;
 
-namespace AddonsMobile.Framework
+namespace AddonsMobile.Framework.Data
 {
     /// <summary>
     /// Registry pusat untuk semua button yang didaftarkan.
@@ -10,39 +10,35 @@ namespace AddonsMobile.Framework
     /// </summary>
     public class KeyRegistry
     {
-        // ═══════════════════════════════════════════════════════════════════════════
-        // PRIVATE FIELDS
-        // ═══════════════════════════════════════════════════════════════════════════
 
+        #region Private Fields
         private readonly Dictionary<string, ModKeyButton> _registeredButtons;
         private readonly Dictionary<string, List<string>> _modButtons;
         private readonly Dictionary<KeyCategory, List<string>> _categoryButtons;
         private readonly IMonitor _monitor;
         private readonly object _lock;
+        #endregion
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // EVENTS
-        // ═══════════════════════════════════════════════════════════════════════════
 
+        #region Events (Notification)
         /// <summary>Dipanggil saat button baru didaftarkan atau diupdate</summary>
-        public event EventHandler<ButtonEventArgs.ButtonRegisteredEventArgs> ButtonRegistered;
+        public event EventHandler<ButtonEventArgs.ButtonRegisteredEventArgs> ButtonRegistered = null!;
 
         /// <summary>Dipanggil saat button di-unregister</summary>
-        public event EventHandler<ButtonEventArgs.ButtonUnregisteredEventArgs> ButtonUnregistered;
+        public event EventHandler<ButtonEventArgs.ButtonUnregisteredEventArgs> ButtonUnregistered = null!;
 
         /// <summary>Dipanggil saat button di-trigger</summary>
-        public event EventHandler<ButtonEventArgs.ButtonTriggeredEventArgs> ButtonTriggered;
+        public event EventHandler<ButtonEventArgs.ButtonTriggeredEventArgs> ButtonTriggered = null!;
 
         /// <summary>Dipanggil saat toggle button berubah state</summary>
-        public event EventHandler<ButtonEventArgs.ButtonToggledEventArgs> ButtonToggled;
+        public event EventHandler<ButtonEventArgs.ButtonToggledEventArgs> ButtonToggled = null!;
 
         /// <summary>Dipanggil saat registry berubah</summary>
-        public event EventHandler<ButtonEventArgs.RegistryChangedEventArgs> RegistryChanged;
+        public event EventHandler<ButtonEventArgs.RegistryChangedEventArgs> RegistryChanged = null!;
+        #endregion
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // PUBLIC PROPERTIES
-        // ═══════════════════════════════════════════════════════════════════════════
 
+        #region Public Properties (Akses Data)
         /// <summary>Jumlah button yang terdaftar</summary>
         public int Count => ExecuteThreadSafe(() => _registeredButtons.Count);
 
@@ -66,14 +62,11 @@ namespace AddonsMobile.Framework
                 );
             }
         }
+        #endregion
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // CONSTRUCTOR
-        // ═══════════════════════════════════════════════════════════════════════════
 
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+        #region Constructor (Inisialisasi)
         public KeyRegistry(IMonitor monitor)
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
         {
             _monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
             _lock = new object();
@@ -85,7 +78,8 @@ namespace AddonsMobile.Framework
             InitializeCategoryDictionary();
 
             _monitor.Log("KeyRegistry initialized", LogLevel.Trace);
-        }
+        } 
+        
 
         /// <summary>
         /// Pre-initialize semua kategori untuk menghindari null checks.
@@ -97,11 +91,10 @@ namespace AddonsMobile.Framework
                 _categoryButtons[category] = new List<string>();
             }
         }
+        #endregion
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // REGISTRATION METHODS
-        // ═══════════════════════════════════════════════════════════════════════════
 
+        #region Registration Methods
         /// <summary>
         /// Mendaftarkan button baru atau update button yang sudah ada.
         /// </summary>
@@ -292,11 +285,10 @@ namespace AddonsMobile.Framework
 
             return removedButtons.Count;
         }
+        #endregion
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // QUERY METHODS
-        // ═══════════════════════════════════════════════════════════════════════════
 
+        #region Query Methods
         /// <summary>
         /// Mendapatkan semua button yang visible (ShouldShow = true).
         /// Hasil sudah di-sort berdasarkan priority dan kategori.
@@ -423,11 +415,10 @@ namespace AddonsMobile.Framework
                 )
             );
         }
+        #endregion
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // TRIGGER METHODS
-        // ═══════════════════════════════════════════════════════════════════════════
 
+        #region Trigger Methods
         /// <summary>
         /// Trigger button berdasarkan unique ID.
         /// </summary>
@@ -552,11 +543,10 @@ namespace AddonsMobile.Framework
                 _monitor.Log($"Released {holdButtons.Count} hold button(s)", LogLevel.Debug);
             }
         }
+        #endregion
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // STATE MANAGEMENT
-        // ═══════════════════════════════════════════════════════════════════════════
 
+        #region State Management
         /// <summary>
         /// Set toggle state untuk button tertentu.
         /// </summary>
@@ -641,11 +631,10 @@ namespace AddonsMobile.Framework
             _monitor.Log($"Reset state for {buttons.Count} button(s)", LogLevel.Debug);
             RaiseRegistryChangedEvent(ButtonEventArgs.RegistryChangeType.StateReset);
         }
+        #endregion
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // EVENT HELPERS
-        // ═══════════════════════════════════════════════════════════════════════════
 
+        #region Event Helpers
         private void RaiseButtonRegisteredEvent(ModKeyButton button, bool isUpdate)
         {
             try
@@ -706,11 +695,10 @@ namespace AddonsMobile.Framework
                 _monitor.Log($"Error in RegistryChanged event handler: {ex.Message}", LogLevel.Error);
             }
         }
+        #endregion
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // THREAD SAFETY HELPERS
-        // ═══════════════════════════════════════════════════════════════════════════
 
+        #region Thread Safety Helper
         /// <summary>
         /// Execute function dengan thread safety.
         /// </summary>
@@ -732,11 +720,10 @@ namespace AddonsMobile.Framework
                 action();
             }
         }
+        #endregion
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // DEBUG & DIAGNOSTICS
-        // ═══════════════════════════════════════════════════════════════════════════
 
+        #region Debug & Diagnostic
         /// <summary>
         /// Mendapatkan informasi diagnostik registry.
         /// </summary>
@@ -754,6 +741,7 @@ namespace AddonsMobile.Framework
                        $"  Total Mods: {totalMods}\n" +
                        $"  Active Categories: {activeCategories}";
             });
-        }
+        } 
+        #endregion
     }
 }

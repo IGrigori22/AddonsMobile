@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace AddonsMobile.Framework
+namespace AddonsMobile.Framework.Data
 {
     /// <summary>
     /// Data model untuk custom button yang didaftarkan oleh mod.

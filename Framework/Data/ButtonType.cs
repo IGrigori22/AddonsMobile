@@ -1,4 +1,4 @@
-﻿namespace AddonsMobile.Framework
+﻿namespace AddonsMobile.Framework.Data
 {
     /// <summary>
     /// Tipe behavior untuk button interaction.

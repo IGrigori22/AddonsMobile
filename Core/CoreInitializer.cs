@@ -1,9 +1,9 @@
-﻿using AddonsMobile.API;
-using AddonsMobile.Framework;
+﻿using AddonsMobile.Framework;
+using AddonsMobile.Framework.Data;
 using AddonsMobile.UI;
 using StardewModdingAPI;
 
-namespace AddonsMobile.Internal.Core
+namespace AddonsMobile.Core
 {
     /// <summary>
     /// Menangani inisialisasi komponen-komponen inti mod
@@ -13,7 +13,8 @@ namespace AddonsMobile.Internal.Core
     {
         #region Fields
         private readonly IModHelper _helper;
-        private readonly IMonitor _monitor; 
+        private readonly IMonitor _monitor;
+        private readonly IManifest _manifest;
         #endregion
 
         #region Initialized Components (Result)
@@ -29,10 +30,11 @@ namespace AddonsMobile.Internal.Core
         #endregion
 
         #region Constructor
-        public CoreInitializer(IModHelper helper, IMonitor monitor)
+        public CoreInitializer(IModHelper helper, IMonitor monitor, IManifest manifest)
         {
             _helper = helper ?? throw new ArgumentNullException(nameof(helper));
             _monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
+            _manifest = manifest ?? throw new ArgumentNullException(nameof(manifest));
         } 
         #endregion
 
@@ -129,7 +131,7 @@ namespace AddonsMobile.Internal.Core
             if (Registry == null) throw new InvalidOperationException("Registry must be initialized before AddonsAPI");
             if (ButtonManager == null) throw new InvalidOperationException("ButtonManager must be initialized before AddonsAPI");
 
-            AddonsAPI = new MobileAddonsAPI(Registry, ButtonManager, _monitor);
+            AddonsAPI = new MobileAddonsAPI(Registry, ButtonManager, _monitor, _manifest);
             _monitor.Log("MobileAddonsAPI initialized", LogLevel.Trace);
         }
 

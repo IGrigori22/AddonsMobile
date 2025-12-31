@@ -1,8 +1,8 @@
-﻿using AddonsMobile.Framework;
+﻿using AddonsMobile.Framework.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace AddonsMobile.API
+namespace AddonsMobile.Framework
 {
     /// <summary>
     /// Public API untuk mod lain mendaftarkan custom buttons ke AddonsMobile.

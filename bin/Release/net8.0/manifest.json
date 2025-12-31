@@ -1,7 +1,7 @@
 {
     "Name": "Addons Mobile",
     "Author": "IGrigori22",
-    "Version": "1.0.1",
+    "Version": "0.8.6",
     "UniqueID": "IGrigori22.AddonsMobile",
     "EntryDll": "AddonsMobile.dll",
     "Description": "Mobile-friendly addons and enhancements for Stardew Valley",

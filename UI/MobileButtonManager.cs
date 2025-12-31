@@ -1,6 +1,6 @@
 ﻿using AddonsMobile.Config;
-using AddonsMobile.Framework;
-using AddonsMobile.Internal.Core;
+using AddonsMobile.Core;
+using AddonsMobile.Framework.Data;
 using AddonsMobile.UI.Animation;
 using AddonsMobile.UI.Components;
 using AddonsMobile.UI.Data;
@@ -25,18 +25,12 @@ namespace AddonsMobile.UI
     /// </summary>
     public sealed class MobileButtonManager : IDisposable
     {
-        // ═══════════════════════════════════════════════════════════════════════════
-        // DEPENDENCIES
-        // ═══════════════════════════════════════════════════════════════════════════
 
         private readonly IModHelper _helper;
         private readonly IMonitor _monitor;
         private readonly KeyRegistry _registry;
         private readonly ModConfig _config;
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // COMPONENTS
-        // ═══════════════════════════════════════════════════════════════════════════
 
         private readonly PositionManager _positionManager;
         private readonly AnimationController _animator;
@@ -49,26 +43,17 @@ namespace AddonsMobile.UI
         private readonly ButtonCallbackQueue _callbackQueue;
         private readonly DebugRenderer _debugRenderer;
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // STATE
-        // ═══════════════════════════════════════════════════════════════════════════
 
         private bool _isVisible;
         private List<ModKeyButton> _currentButtons;
         private MenuBarLayout _currentLayout;
         private ViewportState _viewportState;
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // PROPERTIES
-        // ═══════════════════════════════════════════════════════════════════════════
 
         public bool IsVisible => _isVisible;
         public bool IsExpanded => _animator.IsExpanded;
         public int ButtonCount => _currentButtons.Count;
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // CONSTRUCTOR
-        // ═══════════════════════════════════════════════════════════════════════════
 
         public MobileButtonManager(IModHelper helper, IMonitor monitor)
         {
@@ -103,9 +88,6 @@ namespace AddonsMobile.UI
             _monitor.Log("MobileButtonManager initialized", LogLevel.Trace);
         }
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // EVENT WIRING
-        // ═══════════════════════════════════════════════════════════════════════════
 
         private void WireUpEvents()
         {
@@ -141,9 +123,7 @@ namespace AddonsMobile.UI
             _helper.Events.Display.WindowResized -= OnWindowResized;
         }
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // PUBLIC API
-        // ═══════════════════════════════════════════════════════════════════════════
+
 
         public void SetVisible(bool visible)
         {
@@ -187,9 +167,6 @@ namespace AddonsMobile.UI
             RecalculateLayout();
         }
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // SMAPI EVENT HANDLERS
-        // ═══════════════════════════════════════════════════════════════════════════
 
         private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
         {
@@ -277,9 +254,6 @@ namespace AddonsMobile.UI
             }
         }
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // INPUT HANDLERS
-        // ═══════════════════════════════════════════════════════════════════════════
 
         private void HandleFabTapped()
         {
@@ -355,9 +329,6 @@ namespace AddonsMobile.UI
             return false;
         }
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // UPDATE LOGIC
-        // ═══════════════════════════════════════════════════════════════════════════
 
         private void ProcessCallbackQueue()
         {
@@ -404,9 +375,6 @@ namespace AddonsMobile.UI
             }
         }
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // RENDERING
-        // ═══════════════════════════════════════════════════════════════════════════
 
         private void RenderUI(SpriteBatch spriteBatch)
         {
@@ -476,9 +444,6 @@ namespace AddonsMobile.UI
             }
         }
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // HELPERS
-        // ═══════════════════════════════════════════════════════════════════════════
 
         private bool CanInteract()
         {
@@ -517,9 +482,6 @@ namespace AddonsMobile.UI
             _callbackQueue.Cancel();
         }
 
-        // ═══════════════════════════════════════════════════════════════════════════
-        // DISPOSE
-        // ═══════════════════════════════════════════════════════════════════════════
 
         public void Dispose()
         {
@@ -530,9 +492,6 @@ namespace AddonsMobile.UI
         }
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    // VIEWPORT STATE TRACKER
-    // ═══════════════════════════════════════════════════════════════════════════
 
     /// <summary>
     /// Helper class untuk track viewport changes.

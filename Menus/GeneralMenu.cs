@@ -1,6 +1,6 @@
 ﻿using AddonsMobile.Config;
-using AddonsMobile.Framework;
-using AddonsMobile.Internal.Core;
+using AddonsMobile.Core;
+using AddonsMobile.Framework.Data;
 using AddonsMobile.Menus.Components;
 using Microsoft.Win32;
 using Microsoft.Xna.Framework;

@@ -1,7 +1,7 @@
 ﻿using AddonsMobile.Framework.Conflicts;
 using StardewModdingAPI;
 
-namespace AddonsMobile.Framework
+namespace AddonsMobile.Framework.Data
 {
     /// <summary>
     /// Mendeteksi dan menyelesaikan konflik antar button.

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace AddonsMobile.Framework
+namespace AddonsMobile.Framework.Data
 {
     /// <summary>
     /// Kategori untuk mengelompokkan button.

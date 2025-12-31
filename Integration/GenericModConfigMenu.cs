@@ -1,7 +1,7 @@
 ﻿using AddonsMobile.Config;
 using StardewModdingAPI;
 
-namespace AddonsMobile.Framework.Integration
+namespace AddonsMobile.Integration
 {
     public static class GenericModConfigMenu
     {

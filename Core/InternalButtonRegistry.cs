@@ -1,14 +1,13 @@
-﻿using AddonsMobile.API;
-using AddonsMobile.Framework;
-using AddonsMobile.Menus;
+﻿using AddonsMobile.Menus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using AddonsMobile.Internal.Core;
 using StardewModdingAPI;
 using StardewValley;
 using AddonsMobile.Config;
+using AddonsMobile.Framework.Data;
+using AddonsMobile.Framework;
 
-namespace AddonsMobile.Internal
+namespace AddonsMobile.Core
 {
     /// <summary>
     /// Register button internal for AddonsMobile

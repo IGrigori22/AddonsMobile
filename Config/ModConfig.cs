@@ -1,5 +1,4 @@
-﻿using AddonsMobile.Internal.Core;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace AddonsMobile.Config
 {

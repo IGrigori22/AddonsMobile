@@ -1,14 +1,14 @@
-﻿using AddonsMobile.API;
-using AddonsMobile.Config;
+﻿using AddonsMobile.Config;
 using AddonsMobile.Framework;
-using AddonsMobile.Framework.Integration;
+using AddonsMobile.Framework.Data;
+using AddonsMobile.Integration;
 using AddonsMobile.UI;
 using MonoMod.Utils;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using System.Net.Http.Headers;
 
-namespace AddonsMobile.Internal.Core
+namespace AddonsMobile.Core
 {
     internal sealed class EventHandlerManager
     {

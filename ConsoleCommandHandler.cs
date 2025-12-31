@@ -1,4 +1,4 @@
-﻿using AddonsMobile.Framework;
+﻿using AddonsMobile.Framework.Data;
 using AddonsMobile.UI;
 using StardewModdingAPI;
 

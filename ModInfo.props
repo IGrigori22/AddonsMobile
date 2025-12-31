@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                              MOD INFO PROPS                                    ║
+║                                                                               ║
+║  File ini adalah SATU-SATUNYA tempat untuk mengubah informasi mod.            ║
+║  Semua perubahan di sini akan otomatis ter-sync ke manifest.json saat build.  ║
+║                                                                               ║
+║  CARA PENGGUNAAN:                                                             ║
+║  1. Edit nilai-nilai di bawah sesuai kebutuhan                                ║
+║  2. Build project (Ctrl+Shift+B)                                              ║
+║  3. manifest.json akan otomatis ter-update                                    ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+-->
+<Project>
+
+	<!-- ═══════════════════════════════════════════════════════════════════════ -->
+	<!--                         INFORMASI UTAMA MOD                             -->
+	<!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+	<PropertyGroup>
+
+		<!--
+        ┌─────────────────────────────────────────────────────────────────────┐
+        │  UNIQUE ID                                                          │
+        │                                                                     │
+        │  ID unik untuk mod ini. Format: AuthorName.ModName                  │
+        │  PENTING: Jangan pernah ubah setelah mod dipublish!                 │
+        │  ID ini digunakan untuk tracking saves dan dependencies.            │
+        └─────────────────────────────────────────────────────────────────────┘
+        -->
+		<ModUniqueID>IGrigori22.AddonsMobile</ModUniqueID>
+
+		<!--
+        ┌─────────────────────────────────────────────────────────────────────┐
+        │  MOD NAME                                                           │
+        │                                                                     │
+        │  Nama yang ditampilkan di SMAPI console dan mod manager.            │
+        └─────────────────────────────────────────────────────────────────────┘
+        -->
+		<ModName>Addons Mobile</ModName>
+
+		<!--
+        ┌─────────────────────────────────────────────────────────────────────┐
+        │  DESCRIPTION                                                        │
+        │                                                                     │
+        │  Deskripsi singkat tentang apa yang mod ini lakukan.                │
+        │  Ditampilkan di beberapa mod manager.                               │
+        └─────────────────────────────────────────────────────────────────────┘
+        -->
+		<ModDescription>Mobile-friendly addons and enhancements for Stardew Valley</ModDescription>
+
+		<!--
+        ┌─────────────────────────────────────────────────────────────────────┐
+        │  VERSION                                                            │
+        │                                                                     │
+        │  Versi mod menggunakan Semantic Versioning (SemVer):                │
+        │  MAJOR.MINOR.PATCH                                                  │
+        │                                                                     │
+        │  - MAJOR: Perubahan besar / breaking changes                        │
+        │  - MINOR: Fitur baru (backward compatible)                          │
+        │  - PATCH: Bug fixes                                                 │
+        │                                                                     │
+        │  Contoh: 1.0.0, 1.2.3, 2.0.0-beta                                   │
+        └─────────────────────────────────────────────────────────────────────┘
+        -->
+		<Version>1.0.1</Version>
+
+		<!--
+        ┌─────────────────────────────────────────────────────────────────────┐
+        │  AUTHOR                                                             │
+        │                                                                     │
+        │  Nama pembuat mod. Bisa satu atau lebih (pisahkan dengan koma).     │
+        └─────────────────────────────────────────────────────────────────────┘
+        -->
+		<Authors>IGrigori22</Authors>
+
+	</PropertyGroup>
+
+	<!-- ═══════════════════════════════════════════════════════════════════════ -->
+	<!--                         COMPATIBILITY                                   -->
+	<!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+	<PropertyGroup>
+
+		<!--
+        ┌─────────────────────────────────────────────────────────────────────┐
+        │  MINIMUM SMAPI VERSION                                              │
+        │                                                                     │
+        │  Versi SMAPI minimum yang dibutuhkan mod ini.                       │
+        │  Mod tidak akan load jika SMAPI lebih lama dari ini.                │
+        │                                                                     │
+        │  Referensi: https://smapi.io/                                       │
+        └─────────────────────────────────────────────────────────────────────┘
+        -->
+		<MinimumSMAPIVersion>4.0.0</MinimumSMAPIVersion>
+
+		<!--
+        ┌─────────────────────────────────────────────────────────────────────┐
+        │  MINIMUM GAME VERSION (Opsional)                                    │
+        │                                                                     │
+        │  Versi Stardew Valley minimum yang dibutuhkan.                      │
+        │  Kosongkan jika tidak ada requirement khusus.                       │
+        └─────────────────────────────────────────────────────────────────────┘
+        -->
+		<MinimumGameVersion>1.6</MinimumGameVersion>
+
+	</PropertyGroup>
+
+	<!-- ═══════════════════════════════════════════════════════════════════════ -->
+	<!--                         UPDATE KEYS                                     -->
+	<!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+	<PropertyGroup>
+
+		<!--
+        ┌─────────────────────────────────────────────────────────────────────┐
+        │  UPDATE KEYS                                                        │
+        │                                                                     │
+        │  Digunakan SMAPI untuk cek update mod otomatis.                     │
+        │                                                                     │
+        │  FORMAT: Platform:ID                                                │
+        │                                                                     │
+        │  Platform yang didukung:                                            │
+        │  - Nexus:12345          → NexusMods                                 │
+        │  - GitHub:User/Repo     → GitHub Releases                           │
+        │  - ModDrop:12345        → ModDrop                                   │
+        │  - CurseForge:12345     → CurseForge                                │
+        │                                                                     │
+        │  Multiple keys: pisahkan dengan koma                                │
+        │  Contoh: Nexus:12345, GitHub:IGrigori22/AddonsMobile                │
+        │                                                                     │
+        │  Kosongkan jika belum publish.                                      │
+        └─────────────────────────────────────────────────────────────────────┘
+        -->
+		<ModUpdateKeys>Nexus:00000</ModUpdateKeys>
+
+	</PropertyGroup>
+
+	<!-- ═══════════════════════════════════════════════════════════════════════ -->
+	<!--                         DEPENDENCIES                                    -->
+	<!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+	<!--
+    ┌─────────────────────────────────────────────────────────────────────────────┐
+    │  MOD DEPENDENCIES                                                           │
+    │                                                                             │
+    │  Daftar mod lain yang dibutuhkan oleh mod ini.                              │
+    │                                                                             │
+    │  FORMAT: UniqueID|IsRequired|MinimumVersion                                 │
+    │                                                                             │
+    │  - UniqueID       : ID unik mod yang dibutuhkan                             │
+    │  - IsRequired     : true = wajib ada, false = opsional                      │
+    │  - MinimumVersion : Versi minimum (kosongkan jika tidak ada requirement)    │
+    │                                                                             │
+    │  CONTOH:                                                                    │
+    │  <ModDependency Include="Pathoschild.ContentPatcher|true|2.0.0" />          │
+    │  <ModDependency Include="spacechase0.GenericModConfigMenu|false|" />        │
+    │                                                                             │
+    │  CATATAN:                                                                   │
+    │  - Jika tidak ada dependencies, biarkan ItemGroup ini kosong                │
+    │  - Build akan tetap berjalan normal tanpa dependencies                      │
+    └─────────────────────────────────────────────────────────────────────────────┘
+    -->
+
+	<ItemGroup Label="ModDependencies">
+
+		<!-- ══════════ CONTOH DEPENDENCIES (uncomment jika diperlukan) ══════════ -->
+
+		<!-- Generic Mod Config Menu - Menu konfigurasi in-game (opsional) -->
+		<ModDependency Include="spacechase0.GenericModConfigMenu|false|" /> 
+
+		<!-- Content Patcher - Untuk content pack support (wajib jika digunakan) -->
+		<!-- <ModDependency Include="Pathoschild.ContentPatcher|true|2.0.0" /> -->
+
+		<!-- SpaceCore - Framework tambahan (opsional) -->
+		<!-- <ModDependency Include="spacechase0.SpaceCore|false|1.5.0" /> -->
+
+		<!-- ════════════════════════════════════════════════════════════════════ -->
+
+	</ItemGroup>
+
+</Project>

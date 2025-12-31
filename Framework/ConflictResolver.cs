@@ -1,8 +1,5 @@
 ﻿using AddonsMobile.Framework.Conflicts;
 using StardewModdingAPI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AddonsMobile.Framework
 {
@@ -70,7 +67,7 @@ namespace AddonsMobile.Framework
 
             var keybindGroups = buttons
                 .Where(b => !string.IsNullOrWhiteSpace(b.OriginalKeybind))
-                .GroupBy(b => b.OriginalKeybind.ToUpperInvariant())
+                .GroupBy(b => b.OriginalKeybind!.ToUpperInvariant())
                 .Where(g => g.Count() > 1);
 
             foreach (var group in keybindGroups)

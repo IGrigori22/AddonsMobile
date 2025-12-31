@@ -8,3 +8,194 @@ D:\MyStardewMods\AddOnsMobile\obj\Release\net8.0\AddonsMobile.AssemblyInfo.cs
 D:\MyStardewMods\AddOnsMobile\obj\Release\net8.0\AddonsMobile.csproj.CoreCompileInputs.cache
 D:\MyStardewMods\AddOnsMobile\obj\Release\net8.0\AddonsMobile.dll
 D:\MyStardewMods\AddOnsMobile\obj\Release\net8.0\AddonsMobile.sourcelink.json
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Android_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Apple_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Arrow Down_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Arrow Left_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Arrow Right_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Arrow Up_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Bell_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Book_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Bus_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Calculator_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Calendar_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Camera_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Checkmark_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Chip_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Circle Base_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Circle Frame 2_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Circle Frame_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Circle Half_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Circle Open_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Circle Quarter 2_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Circle Quarter_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Circle_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Clock_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Cloud_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Coffee_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Contacts_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Controller Retro_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Controller_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Crown_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Document_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Email_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Exclamation Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Exclamation Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Exclamation_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\File_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Gallery 2_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Hammer_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Handbag_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Heart_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\House_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Internet_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Keyboard_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Laptop_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter A Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter A Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter A_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter B Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter B Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter B_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter C Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter C Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter C_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter D Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter D Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter D_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter E Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter E Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter E_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter F Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter F Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter F_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter G Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter G Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter G_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter H Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter H Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter H_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter I Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter I Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter I_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter J Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter J Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter J_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter K Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter K Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter K_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter L Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter L Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter L_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter M Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter M Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter M_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter N Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter N Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter N_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter O Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter O Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter O_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter P Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter P Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter P_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter Q Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter Q Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter Q_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter R Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter R Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter R_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter S Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter S Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter S_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter T Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter T Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter T_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter U Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter U Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter U_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter V Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter V Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter V_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter W Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter W Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter W_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter X Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter X Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter X_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter Y Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter Y Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter Y_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter Z Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter Z Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Letter Z_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Location_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Messages_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Metro_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Monitor_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Mountains_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Music_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Note_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 0 Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 0 Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 0_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 1 Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 1 Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 1_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 2 Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 2 Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 2_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 3 Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 3 Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 3_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 4 Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 4 Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 4_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 5 Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 5 Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 5_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 6 Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 6 Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 6_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 7 Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 7 Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 7_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 8 Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 8 Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 8_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 9 Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 9 Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Number 9_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Phone_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Plus Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Plus Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Plus_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Power_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\QR Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\QR White_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Questionmark Black_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Questionmark Yellow_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Questionmark_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Radio_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Railway_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Rubik_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Settings_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Square Base_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Square Frame 2_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Square Frame_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Square Half_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Square Open_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Square Quarter 2_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Square Quarter_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Square_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Taxi_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Train_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Triangle Down_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Triangle Left_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Triangle Right_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Triangle Up_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\User_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Warning_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Weather_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Wrench_White.png
+D:\MyStardewMods\AddOnsMobile\bin\Release\net8.0\assets\Writing_White.png

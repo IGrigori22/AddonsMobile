@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AddonsMobile.Framework.Events
+﻿namespace AddonsMobile.Framework.Events
 {
     /// <summary>
     /// Event arguments untuk button registry events.

@@ -1,6 +1,4 @@
 ﻿using StardewModdingAPI;
-using AddonsMobile.API;
-using System;
 
 namespace AddonsMobile.Framework.Validation
 {
@@ -46,8 +44,8 @@ namespace AddonsMobile.Framework.Validation
             }
             else if (button.Type == ButtonType.Toggle)
             {
-                if (button.OnPress == null)
-                    return (false, $"Toggle button '{button.UniqueId}' must have OnPress action");
+                if (button.OnPress == null && button.OnPress == null)
+                    return (false, $"Toggle button '{button.UniqueId}' requires OnToggle or OnPress action");
             }
 
             // Validasi Priority range

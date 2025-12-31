@@ -1,10 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<Import Project="ModInfo.props" />
+
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<LangVersion>latest</LangVersion>
+
+		<!-- Auto-derived dari ModInfo -->
+		<AssemblyName>$(ModName.Replace(' ', ''))</AssemblyName>
+		<RootNamespace>$(ModName.Replace(' ', ''))</RootNamespace>
+		<AssemblyVersion>$(Version)</AssemblyVersion>
+		<FileVersion>$(Version)</FileVersion>
+		<Company>$(Authors)</Company>
+		<Product>$(ModName)</Product>
+		<Description>$(ModDescription)</Description>
+		<Copyright>Copyright © $(Authors) $([System.DateTime]::Now.Year)</Copyright>
 	</PropertyGroup>
 
 	<!-- ═══════════════════════════════════════════════════════════════ -->
@@ -30,6 +42,8 @@
 
 	<!-- Import props first -->
 	<Import Project="..\ModBuildConfig\SMAPIBuildConfig.props" />
+
+	<Import Project="..\ModBuildConfig\build\ManifestGenerator.targets" />
 
 	<!-- Import targets last -->
 	<Import Project="..\ModBuildConfig\build\SMAPIBuildConfig.targets" />

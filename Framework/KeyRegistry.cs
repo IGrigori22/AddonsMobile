@@ -1,9 +1,6 @@
 ﻿using AddonsMobile.Framework.Events;
 using AddonsMobile.Framework.Validation;
 using StardewModdingAPI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AddonsMobile.Framework
 {
@@ -127,7 +124,7 @@ namespace AddonsMobile.Framework
             {
                 isUpdate = _registeredButtons.TryGetValue(button.UniqueId, out oldButton);
 
-                if (isUpdate)
+                if (isUpdate && oldButton != null)
                 {
                     HandleButtonUpdate(button, oldButton);
                 }
@@ -446,7 +443,7 @@ namespace AddonsMobile.Framework
                 return false;
             }
 
-            ModKeyButton button = GetButton(uniqueId);
+            ModKeyButton? button = GetButton(uniqueId);
 
             // Validasi button
             if (button == null)
@@ -568,7 +565,7 @@ namespace AddonsMobile.Framework
             if (string.IsNullOrWhiteSpace(uniqueId))
                 return false;
 
-            ModKeyButton button = GetButton(uniqueId);
+            ModKeyButton? button = GetButton(uniqueId);
 
             if (button == null)
             {

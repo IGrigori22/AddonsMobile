@@ -3,8 +3,6 @@ using AddonsMobile.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
-using System;
-using System.Linq;
 using FrameworkEvents = AddonsMobile.Framework.Events.ButtonEventArgs;
 
 namespace AddonsMobile.API

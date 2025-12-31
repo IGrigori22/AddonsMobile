@@ -1,9 +1,6 @@
 ﻿using AddonsMobile.Config;
-using AddonsMobile.Framework;
 using AddonsMobile.UI.Data;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
 
 namespace AddonsMobile.UI.Layout
 {
@@ -92,7 +89,7 @@ namespace AddonsMobile.UI.Layout
             else
             {
                 menuBarX = (int)fabPosition.X + fabSize + FABMenuSpacing;
-            }            
+            }
 
             // Clamp to screen bounds
             menuBarX = Math.Max(PositionManager.SCREEN_EDGE_PADDING, menuBarX);

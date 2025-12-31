@@ -29,11 +29,11 @@ namespace AddonsMobile.UI.Components
         public void Draw(SpriteBatch b, Rectangle fabBounds, float gearRotation,
             bool isDragging, bool isHeldDown, bool isExpanded, int buttonCount)
         {
-            float opacity = _config.ButtonOpacity;
+            float opacity = _config.FabOpacity;
             Vector2 center = fabBounds.Center.ToVector2();
 
             // Draw shadow jika enabled
-            if (_config.ShowFabShadow && _config.FabBackground != FabBackgroundStyle.None)
+            if (_config.FabShowShadow && _config.FabBackground != FabBackgroundStyle.None)
             {
                 DrawShadow(b, fabBounds, isDragging);
             }
@@ -50,7 +50,7 @@ namespace AddonsMobile.UI.Components
             );
 
             // Draw shadow untuk icon jika tanpa background
-            if (_config.FabBackground == FabBackgroundStyle.None && _config.ShowFabShadow)
+            if (_config.FabBackground == FabBackgroundStyle.None && _config.FabShowShadow)
             {
                 DrawIconShadow(b, center, opacity * 0.4f, GetIconScale(isDragging, isHeldDown), gearRotation);
             }
@@ -107,7 +107,7 @@ namespace AddonsMobile.UI.Components
 
             if (gearTexture != null)
             {
-                float targetSize = _config.ButtonSize * GEAR_DISPLAY_RATIO;
+                float targetSize = _config.FabSize * GEAR_DISPLAY_RATIO;
                 float textureScale = (targetSize / gearTexture.Width) * scale;
 
                 Vector2 origin = new Vector2(
@@ -139,7 +139,7 @@ namespace AddonsMobile.UI.Components
             var gearTexture = _textureManager.GearTexture;
             if (gearTexture == null) return;
 
-            float targetSize = _config.ButtonSize * GEAR_DISPLAY_RATIO;
+            float targetSize = _config.FabSize * GEAR_DISPLAY_RATIO;
             float textureScale = (targetSize / gearTexture.Width) * scale;
 
             Vector2 origin = new Vector2(
@@ -166,8 +166,8 @@ namespace AddonsMobile.UI.Components
             if (!_drawingHelpers.IsReady) return;
 
             Color gearColor = Color.White * opacity;
-            int gearRadius = (int)(_config.ButtonSize * 0.25f * scale);
-            int toothLength = (int)(_config.ButtonSize * 0.1f * scale);
+            int gearRadius = (int)(_config.FabSize * 0.25f * scale);
+            int toothLength = (int)(_config.FabSize * 0.1f * scale);
             int toothWidth = (int)(5 * scale);
             int numTeeth = 8;
 

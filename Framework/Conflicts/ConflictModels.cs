@@ -1,8 +1,4 @@
-﻿using AddonsMobile.Framework;
-using System;
-using System.Collections.Generic;
-
-namespace AddonsMobile.Framework.Conflicts
+﻿namespace AddonsMobile.Framework.Conflicts
 {
     /// <summary>
     /// Severity level untuk konflik.

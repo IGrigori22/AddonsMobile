@@ -1,5 +1,6 @@
 ﻿using AddonsMobile.Config;
 using AddonsMobile.Framework;
+using AddonsMobile.Internal.Core;
 using AddonsMobile.UI.Animation;
 using AddonsMobile.UI.Components;
 using AddonsMobile.UI.Data;
@@ -14,11 +15,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Mods;
-using XnaRectangle = Microsoft.Xna.Framework.Rectangle;
 using TileRectangle = xTile.Dimensions.Rectangle;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AddonsMobile.UI
 {
@@ -77,8 +74,8 @@ namespace AddonsMobile.UI
         {
             _helper = helper ?? throw new ArgumentNullException(nameof(helper));
             _monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
-            _registry = ModEntry.Registry;
-            _config = ModEntry.Config;
+            _registry = StaticReferenceHolder.Registry;
+            _config = StaticReferenceHolder.Config;
 
             // Initialize components
             _positionManager = new PositionManager(helper, monitor, _config);
@@ -178,7 +175,7 @@ namespace AddonsMobile.UI
             _currentButtons = _registry.GetAllButtons().ToList();
             RecalculateLayout();
 
-            if (_config.VerboseLogging)
+            if (_config.DebugVerboseLogging)
             {
                 _monitor.Log($"Refreshed: {_currentButtons.Count} button(s)", LogLevel.Debug);
             }
@@ -266,7 +263,7 @@ namespace AddonsMobile.UI
         {
             UpdatePosition();
 
-            if (_config.VerboseLogging)
+            if (_config.DebugVerboseLogging)
             {
                 _monitor.Log($"Window resized: {e.NewSize.X}x{e.NewSize.Y}", LogLevel.Debug);
             }
@@ -370,9 +367,9 @@ namespace AddonsMobile.UI
             {
                 if (CanInteract())
                 {
-                    _registry.TriggerButton(readyButtonId, isProgrammatic: false, logAction: _config.VerboseLogging);
+                    _registry.TriggerButton(readyButtonId, isProgrammatic: false, logAction: _config.DebugVerboseLogging);
                 }
-                else if (_config.VerboseLogging)
+                else if (_config.DebugVerboseLogging)
                 {
                     _monitor.Log($"Skipped callback '{readyButtonId}' - cannot interact", LogLevel.Debug);
                 }
@@ -430,7 +427,7 @@ namespace AddonsMobile.UI
             RenderFab(spriteBatch);
 
             // Render debug (if enabled)
-            if (_config.VerboseLogging)
+            if (_config.DebugVerboseLogging)
             {
                 RenderDebugInfo(spriteBatch);
             }
@@ -462,7 +459,7 @@ namespace AddonsMobile.UI
                 _registry.Count
             );
 
-            if (_inputHandler.IsDragging && _config.ShowDragIndicator)
+            if (_inputHandler.IsDragging && _config.DragShowIndicator)
             {
                 _fabRenderer.DrawDragIndicator(b, _positionManager.FabBounds);
             }
@@ -505,7 +502,7 @@ namespace AddonsMobile.UI
         {
             _currentLayout = _layoutCalculator.Calculate(
                 _positionManager.Position,
-                _config.ButtonSize,
+                _config.FabSize,
                 _currentButtons.Count,
                 _animator.MenuBarWidth,
                 Game1.uiViewport.Width,

@@ -59,7 +59,7 @@ namespace AddonsMobile.UI.Handlers
         public void UpdatePosition(Vector2 cursorPosition)
         {
             if (!_isHeldDown) return;
-            if (!_config.EnableDragging) return;
+            if (!_config.DragEnabled) return;
 
             var offset = DateTime.Now - _lastKeyDownTime;
 

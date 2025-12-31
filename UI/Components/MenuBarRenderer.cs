@@ -32,7 +32,7 @@ namespace AddonsMobile.UI.Components
             float menuBarWidth, float menuBarOpacity, float expandProgress,
             List<Rectangle> buttonBounds, List<ModKeyButton> buttons)
         {
-            float opacity = menuBarOpacity * _config.ButtonOpacity;
+            float opacity = menuBarOpacity * _config.MenuButtonOpacity;
 
             int animatedWidth = (int)menuBarWidth;
             if (animatedWidth <= 0) return;

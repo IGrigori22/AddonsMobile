@@ -13,13 +13,13 @@ namespace AddonsMobile.UI.Rendering
         private readonly IMonitor _monitor;
 
         // Loaded textures
-        public Texture2D GearTexture { get; private set; }
-        public Texture2D MenuBarTexture { get; private set; }
-        public Texture2D ButtonFrameTexture { get; private set; }
+        public Texture2D? GearTexture { get; private set; }
+        public Texture2D? MenuBarTexture { get; private set; }
+        public Texture2D? ButtonFrameTexture { get; private set; }
 
         // 9-slice renderers
-        public NineSliceRenderer MenuBarRenderer { get; private set; }
-        public NineSliceRenderer ButtonFrameRenderer { get; private set; }
+        public NineSliceRenderer? MenuBarRenderer { get; private set; }
+        public NineSliceRenderer? ButtonFrameRenderer { get; private set; }
 
         // Constants
         private const int MENU_BAR_BORDER = 12;

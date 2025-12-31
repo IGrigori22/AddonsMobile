@@ -14,7 +14,7 @@ namespace AddonsMobile.UI.Rendering
         // EXISTING FIELDS
         // ══════════════════════════════════════════════════════════════════
 
-        private Texture2D _pixel;
+        private Texture2D? _pixel;
 
         // ══════════════════════════════════════════════════════════════════
         // NEW: TEXTURE CACHES
@@ -22,7 +22,7 @@ namespace AddonsMobile.UI.Rendering
 
         private readonly Dictionary<int, Texture2D> _circleCache = new();
         private readonly Dictionary<string, Texture2D> _roundedRectCache = new();
-        private GraphicsDevice _graphicsDevice;
+        private GraphicsDevice? _graphicsDevice;
 
         private const int MAX_CACHE_SIZE = 20;  // Limit cache untuk memory
 
@@ -30,7 +30,7 @@ namespace AddonsMobile.UI.Rendering
         // PROPERTIES
         // ══════════════════════════════════════════════════════════════════
 
-        public Texture2D Pixel => _pixel;
+        public Texture2D? Pixel => _pixel;
         public bool IsReady => _pixel != null && _graphicsDevice != null;
 
         // ══════════════════════════════════════════════════════════════════
@@ -220,7 +220,7 @@ namespace AddonsMobile.UI.Rendering
         /// <summary>
         /// Create rounded rectangle texture
         /// </summary>
-        private Texture2D CreateRoundedRectTexture(int width, int height, int radius)
+        private Texture2D? CreateRoundedRectTexture(int width, int height, int radius)
         {
             if (_graphicsDevice == null || width <= 0 || height <= 0) return null;
 

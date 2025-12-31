@@ -11,7 +11,7 @@ namespace AddonsMobile.UI.Rendering
     {
         private readonly DrawingHelpers _drawingHelpers;
         private readonly Dictionary<(FabBackgroundStyle style, int size), Texture2D> _sizedCache = new();
-        private GraphicsDevice _graphicsDevice;
+        private GraphicsDevice? _graphicsDevice;
 
         public FabBackgroundRenderer(DrawingHelpers drawingHelpers)
         {
@@ -47,7 +47,7 @@ namespace AddonsMobile.UI.Rendering
             b.Draw(texture, bounds, tint * opacity);
         }
 
-        private Texture2D GetOrCreateTexture(FabBackgroundStyle style, int size)
+        private Texture2D? GetOrCreateTexture(FabBackgroundStyle style, int size)
         {
             if (_graphicsDevice == null) return null;
 

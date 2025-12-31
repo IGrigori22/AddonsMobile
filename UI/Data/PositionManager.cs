@@ -14,12 +14,12 @@ namespace AddonsMobile.UI.Data
         private readonly IMonitor _monitor;
         private readonly ModConfig _config;
 
-        private ButtonPositionData _positionData;
+        private ButtonPositionData? _positionData;
 
         private const string POSITION_DATA_FILE = "button-position.json";
         public const int SCREEN_EDGE_PADDING = 20;
 
-        public ButtonPositionData Data => _positionData;
+        public ButtonPositionData? Data => _positionData;
         public Vector2 Position { get; private set; }
         public Rectangle FabBounds { get; private set; }
 
@@ -41,8 +41,8 @@ namespace AddonsMobile.UI.Data
 
                 if (!_positionData.HasSavedPosition)
                 {
-                    _positionData.PositionXPercent = _config.ButtonPositionX;
-                    _positionData.PositionYPercent = _config.ButtonPositionY;
+                    _positionData.PositionXPercent = _config.FabPositionX;
+                    _positionData.PositionYPercent = _config.FabPositionY;
                     _monitor.Log("Using default position from config", LogLevel.Trace);
                 }
                 else
@@ -55,8 +55,8 @@ namespace AddonsMobile.UI.Data
                 _monitor.Log($"Failed to load position data: {ex.Message}", LogLevel.Warn);
                 _positionData = new ButtonPositionData
                 {
-                    PositionXPercent = _config.ButtonPositionX,
-                    PositionYPercent = _config.ButtonPositionY
+                    PositionXPercent = _config.FabPositionX,
+                    PositionYPercent = _config.FabPositionY
                 };
             }
         }
@@ -65,10 +65,10 @@ namespace AddonsMobile.UI.Data
         {
             try
             {
-                _positionData.LastSaved = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                _positionData!.LastSaved = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 _helper.Data.WriteJsonFile(POSITION_DATA_FILE, _positionData);
 
-                if (_config.VerboseLogging)
+                if (_config.DebugVerboseLogging)
                 {
                     _monitor.Log($"Saved button position: ({_positionData.PositionXPercent:F1}%, {_positionData.PositionYPercent:F1}%)", LogLevel.Debug);
                 }
@@ -81,8 +81,8 @@ namespace AddonsMobile.UI.Data
 
         public void ResetPosition()
         {
-            _positionData.PositionXPercent = _config.ButtonPositionX;
-            _positionData.PositionYPercent = _config.ButtonPositionY;
+            _positionData!.PositionXPercent = _config.FabPositionX;
+            _positionData.PositionYPercent = _config.FabPositionY;
             _positionData.LastSaved = 0;
 
             try
@@ -93,7 +93,7 @@ namespace AddonsMobile.UI.Data
 
             UpdatePosition();
             Game1.playSound("dialogueCharacter");
-            _monitor.Log($"Position reset to default: ({_config.ButtonPositionX}%, {_config.ButtonPositionY}%)", LogLevel.Info);
+            _monitor.Log($"Position reset to default: ({_config.FabPositionX}%, {_config.FabPositionY}%)", LogLevel.Info);
         }
 
         // ══════════════════════════════════════════════════════════════════
@@ -106,9 +106,9 @@ namespace AddonsMobile.UI.Data
         private (int minX, int maxX, int minY, int maxY) GetSafeBounds(int screenWidth, int screenHeight)
         {
             int minX = SCREEN_EDGE_PADDING + _config.SafeAreaLeft;
-            int maxX = screenWidth - _config.ButtonSize - SCREEN_EDGE_PADDING - _config.SafeAreaRight;
+            int maxX = screenWidth - _config.FabSize - SCREEN_EDGE_PADDING - _config.SafeAreaRight;
             int minY = SCREEN_EDGE_PADDING + _config.SafeAreaTop;
-            int maxY = screenHeight - _config.ButtonSize - SCREEN_EDGE_PADDING - _config.SafeAreaBottom;
+            int maxY = screenHeight - _config.FabSize - SCREEN_EDGE_PADDING - _config.SafeAreaBottom;
 
             // Pastikan max tidak lebih kecil dari min
             maxX = Math.Max(minX, maxX);
@@ -134,8 +134,8 @@ namespace AddonsMobile.UI.Data
 
             // Calculate position from percentage
             Position = new Vector2(
-                screenWidth * (_positionData.PositionXPercent / 100f) - _config.ButtonSize / 2f,
-                screenHeight * (_positionData.PositionYPercent / 100f) - _config.ButtonSize / 2f
+                screenWidth * (_positionData!.PositionXPercent / 100f) - _config.FabSize / 2f,
+                screenHeight * (_positionData.PositionYPercent / 100f) - _config.FabSize / 2f
             );
 
             // ← CHANGED: Now uses safe area bounds
@@ -149,11 +149,11 @@ namespace AddonsMobile.UI.Data
             FabBounds = new Rectangle(
                 (int)Position.X,
                 (int)Position.Y,
-                _config.ButtonSize,
-                _config.ButtonSize
+                _config.FabSize,
+                _config.FabSize
             );
 
-            if (_config.VerboseLogging)
+            if (_config.DebugVerboseLogging)
             {
                 _monitor.Log($"FAB position: ({Position.X:F0}, {Position.Y:F0}) " +
                             $"SafeArea: L={_config.SafeAreaLeft} R={_config.SafeAreaRight} " +
@@ -176,8 +176,8 @@ namespace AddonsMobile.UI.Data
 
             // Center FAB ke posisi touch
             Vector2 newPos = new Vector2(
-                scaledPos.X - _config.ButtonSize / 2f,
-                scaledPos.Y - _config.ButtonSize / 2f
+                scaledPos.X - _config.FabSize / 2f,
+                scaledPos.Y - _config.FabSize / 2f
             );
 
             // ← CHANGED: Now uses safe area bounds
@@ -193,15 +193,15 @@ namespace AddonsMobile.UI.Data
             FabBounds = new Rectangle(
                 (int)Position.X,
                 (int)Position.Y,
-                _config.ButtonSize,
-                _config.ButtonSize
+                _config.FabSize,
+                _config.FabSize
             );
 
             // Update position data untuk disimpan nanti
-            float centerX = Position.X + _config.ButtonSize / 2f;
-            float centerY = Position.Y + _config.ButtonSize / 2f;
+            float centerX = Position.X + _config.FabSize / 2f;
+            float centerY = Position.Y + _config.FabSize / 2f;
 
-            _positionData.PositionXPercent = MathHelper.Clamp(
+            _positionData!.PositionXPercent = MathHelper.Clamp(
                 (centerX / screenWidth) * 100f, 5f, 95f);
             _positionData.PositionYPercent = MathHelper.Clamp(
                 (centerY / screenHeight) * 100f, 5f, 95f);
